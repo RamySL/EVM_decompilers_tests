@@ -1,0 +1,223 @@
+function 0x6fdde03 public {
+// block 0xae
+  unknown var4 = $m;
+  uint $m = $m + (0x20 + (0x20 * ((0x1f + ((((0x100 * (0 == (0x1 & var3))) - 0x1) & var3) / 0x2)) / 0x20)));
+  m[var4] = (((0x100 * (0 == (0x1 & var3))) - 0x1) & var3) / 0x2
+  uint var5 = 0x20 + var4;
+  unknown var7 = (((0x100 * (0 == (0x1 & var7))) - 0x1) & var7) / 0x2;
+  if (0 == var7) goto 0x575
+
+// block 0x52f
+  if (0x1f < var7) goto 0x54a
+
+// block 0x537
+  m[var5] = 0x100 * (_storage3 / 0x100)
+  goto 0x575
+
+// block 0x54a
+  unknown swap = var5;
+  uint var5 = var5 + var7;
+  unknown var6 = sha3r(0x3);
+  unknown var7 = swap;
+
+// block 0x558
+  m[var7] = s[var6]
+  unknown swap = var6;
+  unknown var6 = var7;
+  uint var7 = 0x1 + swap;
+  unknown swap = var6;
+  unknown var6 = var7;
+  uint var7 = 0x20 + swap;
+  if (var5 <= 0x20 + swap) {
+    break;
+  }
+
+
+// block 0x56c
+
+
+// block 0x575
+  m[$m] = (0x20 + $m) - $m
+  m[0x20 + $m] = m[var4]
+  uint var5 = 0x20 + (0x20 + $m);
+  unknown swap = m[var4];
+  uint var6 = 0x20 + var4;
+  unknown var11 = 0x0;
+  while (true) {
+    if (var11 >= swap) {
+      break;
+    }
+
+    m[var5 + var11] = m[var6 + var11]
+    uint var11 = 0x20 + var11;
+  }
+  unknown var6 = swap;
+  unknown swap = var5;
+  unknown var5 = var6;
+  uint var6 = var6 + swap;
+  unknown swap = var5;
+  unknown var5 = var6;
+  unknown var6 = 0x1f & swap;
+  if (0x1f & swap) {
+    m[var5 - var6] = (! ((0x100 ** (0x20 - var6)) - 0x1)) & m[var5 - var6]
+    uint var5 = 0x20 + (var5 - var6);
+  }
+  return $m;
+
+}
+
+function 0x95ea7b3 public {
+// block 0x131
+  require((calldatasize - 0x4) >= 0x40);
+  _storage2[msg.sender][_args1] = _args2;
+  emit Approval(/*address*/ msg.sender, /*address*/ _args1, /*uint256*/ _args2);
+  return true;
+
+}
+
+function totalSupply() public {
+// block 0x195
+  return _storage0;
+
+}
+
+function transferFrom(address _args1, address _args2, uint256 _args3) public {
+// block 0x1b3
+  require((calldatasize - 0x4) >= 0x60);
+  address var2 = _args1;
+  address var3 = _args2;
+  unknown var4 = _args3;
+  unknown var6 = _storage2[_args1][msg.sender];
+  bool var7 = _storage1[_args1] >= var4;
+  if (var7) {
+    bool var7 = var6 >= var4;
+  }
+  require(var7);
+  _storage1[var3] = _storage1[var3] + var4;
+  _storage1[var2] = _storage1[var2] - var4;
+  if (var6 < WD_MASK) {
+    _storage2[var2][msg.sender] = var6 - var4;
+  }
+  emit Transfer(/*address*/ var2, /*address*/ var3, /*uint256*/ var4);
+  return true;
+
+}
+
+function balances(address _args1) public {
+// block 0x237
+  require((calldatasize - 0x4) >= 0x20);
+  return _storage1[_args1];
+
+}
+
+function decimals() public {
+// block 0x28f
+  return 0xff & (0xff & _storage4);
+
+}
+
+function allowed(address _args1, address _args2) public {
+// block 0x2b0
+  require((calldatasize - 0x4) >= 0x40);
+  return _storage2[_args1][_args2];
+
+}
+
+function balanceOf(address _args1) public {
+// block 0x328
+  require((calldatasize - 0x4) >= 0x20);
+  return _storage1[_args1];
+
+}
+
+function symbol() public {
+// block 0x380
+  unknown var4 = $m;
+  uint $m = $m + (0x20 + (0x20 * ((0x1f + ((((0x100 * (0 == (0x1 & var3))) - 0x1) & var3) / 0x2)) / 0x20)));
+  m[var4] = (((0x100 * (0 == (0x1 & var3))) - 0x1) & var3) / 0x2
+  uint var5 = 0x20 + var4;
+  unknown var7 = (((0x100 * (0 == (0x1 & var7))) - 0x1) & var7) / 0x2;
+  if (0 == var7) goto 0xa81
+
+// block 0xa3b
+  if (0x1f < var7) goto 0xa56
+
+// block 0xa43
+  m[var5] = 0x100 * (_storage5 / 0x100)
+  goto 0xa81
+
+// block 0xa56
+  unknown swap = var5;
+  uint var5 = var5 + var7;
+  unknown var6 = sha3r(0x5);
+  unknown var7 = swap;
+
+// block 0xa64
+  m[var7] = s[var6]
+  unknown swap = var6;
+  unknown var6 = var7;
+  uint var7 = 0x1 + swap;
+  unknown swap = var6;
+  unknown var6 = var7;
+  uint var7 = 0x20 + swap;
+  if (var5 <= 0x20 + swap) {
+    break;
+  }
+
+
+// block 0xa78
+
+
+// block 0xa81
+  m[$m] = (0x20 + $m) - $m
+  m[0x20 + $m] = m[var4]
+  uint var5 = 0x20 + (0x20 + $m);
+  unknown swap = m[var4];
+  uint var6 = 0x20 + var4;
+  unknown var11 = 0x0;
+  while (true) {
+    if (var11 >= swap) {
+      break;
+    }
+
+    m[var5 + var11] = m[var6 + var11]
+    uint var11 = 0x20 + var11;
+  }
+  unknown var6 = swap;
+  unknown swap = var5;
+  unknown var5 = var6;
+  uint var6 = var6 + swap;
+  unknown swap = var5;
+  unknown var5 = var6;
+  unknown var6 = 0x1f & swap;
+  if (0x1f & swap) {
+    m[var5 - var6] = (! ((0x100 ** (0x20 - var6)) - 0x1)) & m[var5 - var6]
+    uint var5 = 0x20 + (var5 - var6);
+  }
+  return $m;
+
+}
+
+function transfer(address _args1, uint256 _args2) public {
+// block 0x403
+  require((calldatasize - 0x4) >= 0x40);
+  require(_storage1[msg.sender] >= _args2);
+  _storage1[msg.sender] = _storage1[msg.sender] - _args2;
+  _storage1[_args1] = _storage1[_args1] + _args2;
+  emit Transfer(/*address*/ msg.sender, /*address*/ _args1, /*uint256*/ _args2);
+  return true;
+
+}
+
+function allowance(address _args1, address _args2) public {
+// block 0x467
+  require((calldatasize - 0x4) >= 0x40);
+  return _storage2[_args1][_args2];
+
+}
+
+function() public {
+// block 0xc
+  revert(0x0, 0x0);
+
+}

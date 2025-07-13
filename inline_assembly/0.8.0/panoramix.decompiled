@@ -1,0 +1,47 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  stored is uint256 at storage 0
+
+def getStored() payable: 
+  return stored
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  revert
+
+def unknown249e6582(uint256 _param1) payable: 
+  return (_param1 + 1)
+
+def addNumbers(uint256 _param1, uint256 _param2) payable: 
+  return (_param1 + _param2)
+
+def unknown578f1835(uint256 _param1, uint256 _param2) payable: 
+  stored = _param1 * _param2
+
+def unknown6d0dbc1a(uint256 _param1, uint256 _param2, uint256 _param3, uint256 _param4) payable: 
+  signer = erecover(_param1, _param2, _param3, _param4) # precompiled
+  return address(signer)
+
+def unknown7a26aa21() payable: 
+  idx = 0
+  s = cd[4] + 36
+  t = 128
+  while idx < ('cd', 4).length:
+      mem[t] = cd[s]
+      idx = idx + 1
+      s = s + 32
+      t = t + 32
+      continue 
+  s = 0
+  s = 0
+  while ('cd', 4).length < ('cd', 4).length:
+      s = ('cd', 4).length + 1
+      s = s + mem[(32 * ('cd', 4).length) + 128]
+      continue 
+  return s
+
+

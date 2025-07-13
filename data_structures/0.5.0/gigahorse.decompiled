@@ -1,0 +1,129 @@
+// Decompiled by library.dedaub.com
+// 2025.07.02 08:20 UTC
+// Compiled using the solidity compiler version 0.4.7<=v<0.5.9
+
+
+// Data structures and variables inferred from the use of storage instructions
+mapping (uint256 => struct_252) _incrementBalance; // STORAGE[0x0]
+mapping (address => mapping (uint256 => bool)) _setFlag; // STORAGE[0x1]
+mapping (address => string) _getBlob; // STORAGE[0x2]
+
+struct struct_252 { uint256[] field0; mapping (address => uint256) field1; };
+
+
+function getBlob(address collection) public nonPayable { 
+    require(msg.data.length - 4 >= 32);
+    v0 = new bytes[](((!(0x1 & _getBlob[collection].length) << 8) - 1 & _getBlob[collection].length) >> 1);
+    v1 = v2 = v0.data;
+    if (((!(0x1 & _getBlob[collection].length) << 8) - 1 & _getBlob[collection].length) >> 1) {
+        if (31 < ((!(0x1 & _getBlob[collection].length) << 8) - 1 & _getBlob[collection].length) >> 1) {
+            v3 = v4 = _getBlob[collection].data;
+            do {
+                MEM[v1] = STORAGE[v3];
+                v3 += 1;
+                v1 += 32;
+            } while (v2 + (((!(0x1 & _getBlob[collection].length) << 8) - 1 & _getBlob[collection].length) >> 1) > v1);
+        } else {
+            MEM[v2] = _getBlob[collection].length >> 8 << 8;
+        }
+    }
+    v5 = new bytes[](v0.length);
+    v6 = v7 = 0;
+    while (v6 < v0.length) {
+        v5[v6] = v0[v6];
+        v6 = v6 + 32;
+    }
+    v8 = v9 = v0.length + v5.data;
+    if (0x1f & v0.length) {
+        MEM[v9 - (0x1f & v0.length)] = ~((uint8.max + 1) ** (32 - (0x1f & v0.length)) - 1) & MEM[v9 - (0x1f & v0.length)];
+    }
+    return v5;
+}
+
+function getBalance(uint256 _conditionIndex, address _user) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    return _incrementBalance[_conditionIndex].field1[_user];
+}
+
+function incrementBalance(uint256 amount) public nonPayable { 
+    require(msg.data.length - 4 >= 32);
+    _incrementBalance[amount].field1[msg.sender] += 1;
+}
+
+function setFlag(uint256 flag_) public nonPayable { 
+    require(msg.data.length - 4 >= 32);
+    _setFlag[msg.sender][flag_] = 1;
+}
+
+function 0xdd7d5edb(struct(2) varg0) public nonPayable { 
+    require(msg.data.length - 4 >= 32);
+    require(varg0 <= uint32.max + 1);
+    require(4 + varg0 + 32 <= 4 + (msg.data.length - 4));
+    v0 = v1 = 36 + varg0;
+    require(!((varg0.word0 > uint32.max + 1) | (v1 + varg0.word0 > 4 + (msg.data.length - 4))));
+    v2 = v3 = _getBlob[msg.sender].data;
+    if (31 < varg0.word0) {
+        _getBlob[msg.sender].length = 1 + (varg0.word0 + varg0.word0);
+        if (varg0.word0) {
+            while (v1 + varg0.word0 > v0) {
+                STORAGE[v2] = msg.data[v0];
+                v0 += 32;
+                v2 += 1;
+            }
+        }
+    } else {
+        _getBlob[msg.sender].length = varg0.word0 + varg0.word0 | bytes31(varg0.word1);
+    }
+    while (v3 + (31 + (((!(0x1 & _getBlob[msg.sender].length) << 8) - 1 & _getBlob[msg.sender].length) >> 1) >> 5) > v2) {
+        STORAGE[v2] = 0;
+        v2 += 1;
+    }
+}
+
+function getNumber(uint256 tokenId, uint256 index) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    assert(index < _incrementBalance[tokenId].length);
+    return _incrementBalance[tokenId].field0[index];
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function 0x0f3d0204(uint256 varg0, uint256 varg1) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    _incrementBalance[varg0].length = _incrementBalance[varg0].length + 1;
+    _incrementBalance[varg0].field0[_incrementBalance[varg0].length + 1 - 1] = varg1;
+}
+
+function 0x98fd4b41(uint256 varg0, address varg1) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    return _setFlag[varg1][varg0];
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    if (msg.data.length >= 4) {
+        if (0xf3d0204 == uint32(function_selector >> 224)) {
+            0x0f3d0204();
+        } else if (0x98fd4b41 == uint32(function_selector >> 224)) {
+            0x98fd4b41();
+        } else if (0xa0439e80 == uint32(function_selector >> 224)) {
+            getBlob(address);
+        } else if (0xb0a79459 == uint32(function_selector >> 224)) {
+            getBalance(uint256,address);
+        } else if (0xb32fe94f == uint32(function_selector >> 224)) {
+            incrementBalance(uint256);
+        } else if (0xd40c79f0 == uint32(function_selector >> 224)) {
+            setFlag(uint256);
+        } else if (0xdd7d5edb == uint32(function_selector >> 224)) {
+            0xdd7d5edb();
+        } else if (0xf3490489 == uint32(function_selector >> 224)) {
+            getNumber(uint256,uint256);
+        }
+    }
+    fallback();
+}

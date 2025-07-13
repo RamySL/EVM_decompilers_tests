@@ -1,0 +1,89 @@
+// Decompiled by library.dedaub.com
+// 2025.07.01 22:10 UTC
+// Compiled using the solidity compiler version 0.8.0
+
+
+// Data structures and variables inferred from the use of storage instructions
+uint256 stor_0; // STORAGE[0x0]
+
+
+
+function 0xe1f7ec5a() public payable { 
+    return stor_0;
+}
+
+function addNumbers(uint256 a, uint256 b) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    return a + b;
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function 0x249e6582(uint256 varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    return varg0 + 1;
+}
+
+function 0x578f1835(uint256 varg0, uint256 varg1) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    stor_0 = varg0 * varg1;
+}
+
+function 0x6d0dbc1a(uint256 varg0, uint8 varg1, uint256 varg2, uint256 varg3) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 128);
+    v0, /* address */ v1 = ecrecover(varg0, varg1, varg2, varg3);
+    return address(v1);
+}
+
+function 0x7a26aa21(uint256[] varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    require(varg0 <= uint64.max);
+    require(4 + varg0 + 31 < 4 + (msg.data.length - 4));
+    v0 = v1 = varg0.data;
+    require(varg0.length <= uint64.max, Panic(65)); // failed memory allocation (too much memory)
+    v2 = new uint256[](varg0.length);
+    require(!((v2 + ((varg0.length << 5) + 32) > uint64.max) | (v2 + ((varg0.length << 5) + 32) < v2)), Panic(65)); // failed memory allocation (too much memory)
+    v3 = v4 = v2.data;
+    require(v1 + (varg0.length << 5) <= 4 + (msg.data.length - 4));
+    v5 = v6 = 0;
+    while (v5 < varg0.length) {
+        require(msg.data[v0] == msg.data[v0]);
+        MEM[v3] = msg.data[v0];
+        v3 = v3 + 32;
+        v0 = v0 + 32;
+        v5 = v5 + 1;
+    }
+    v7 = v8 = 0;
+    v9 = v10 = 0;
+    while (v9 < v2.length) {
+        v7 = v7 + v2[v9];
+        v9 = v9 + 1;
+    }
+    return v7;
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    require(!msg.value);
+    if (msg.data.length >= 4) {
+        if (0x249e6582 == function_selector >> 224) {
+            0x249e6582();
+        } else if (0x578f1835 == function_selector >> 224) {
+            0x578f1835();
+        } else if (0x6d0dbc1a == function_selector >> 224) {
+            0x6d0dbc1a();
+        } else if (0x7a26aa21 == function_selector >> 224) {
+            0x7a26aa21();
+        } else if (0xe1f7ec5a == function_selector >> 224) {
+            0xe1f7ec5a();
+        } else if (0xef9fc50b == function_selector >> 224) {
+            addNumbers(uint256,uint256);
+        }
+    }
+    fallback();
+}

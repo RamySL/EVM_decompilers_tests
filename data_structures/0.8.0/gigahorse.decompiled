@@ -1,0 +1,150 @@
+// Decompiled by library.dedaub.com
+// 2025.07.01 21:59 UTC
+// Compiled using the solidity compiler version 0.8.0
+
+
+// Data structures and variables inferred from the use of storage instructions
+mapping (uint256 => struct_324) _incrementBalance; // STORAGE[0x0]
+mapping (address => mapping (uint256 => bool)) _setFlag; // STORAGE[0x1]
+mapping (address => string) _getBlob; // STORAGE[0x2]
+
+struct struct_324 { uint256[] field0; mapping (address => uint256) field1; };
+
+
+function getBalance(uint256 _conditionIndex, address _user) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    return _incrementBalance[_conditionIndex].field1[_user];
+}
+
+function incrementBalance(uint256 amount) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    require(_incrementBalance[amount].field1[msg.sender] != uint256.max, Panic(17)); // arithmetic overflow or underflow
+    _incrementBalance[amount].field1[msg.sender] = _incrementBalance[amount].field1[msg.sender] + 1;
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function setFlag(uint256 flag_) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    _setFlag[msg.sender][flag_] = 1;
+}
+
+function 0xdd7d5edb(struct(2) varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    require(varg0 <= uint64.max);
+    require(4 + varg0 + 31 < 4 + (msg.data.length - 4));
+    require(varg0.word0 <= uint64.max);
+    v0 = v1 = 4 + varg0 + 32;
+    require(v1 + varg0.word0 <= 4 + (msg.data.length - 4));
+    v2 = 0x88a(_getBlob[msg.sender].length);
+    v3 = v4 = _getBlob[msg.sender].data;
+    if (varg0.word0) {
+        if (31 < varg0.word0) {
+            _getBlob[msg.sender].length = 1 + (varg0.word0 + varg0.word0);
+            if (varg0.word0) {
+                while (v1 + varg0.word0 > v0) {
+                    STORAGE[v3] = msg.data[v0];
+                    v0 += 32;
+                    v3 += 1;
+                }
+            }
+        } else {
+            _getBlob[msg.sender].length = varg0.word0 + varg0.word0 | bytes31(varg0.word1);
+        }
+    } else {
+        _getBlob[msg.sender].length = 0;
+    }
+    while (v4 + (31 + v2 >> 5) > v3) {
+        STORAGE[v3] = 0;
+        v3 += 1;
+    }
+}
+
+function getNumber(uint256 tokenId, uint256 index) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    require(index < _incrementBalance[tokenId].length, Panic(50)); // access an out-of-bounds or negative index of bytesN array or slice
+    return _incrementBalance[tokenId].field0[index];
+}
+
+function 0x88a(uint256 varg0) private { 
+    v0 = v1 = varg0 >> 1;
+    if (!(varg0 & 0x1)) {
+        v0 = v2 = v1 & 0x7f;
+    }
+    require(varg0 & 0x1 != v0 < 32, Panic(34)); // access to incorrectly encoded storage byte array
+    return v0;
+}
+
+function 0x0f3d0204(uint256 varg0, uint256 varg1) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    _incrementBalance[varg0].length = _incrementBalance[varg0].length + 1;
+    _incrementBalance[varg0].field0[_incrementBalance[varg0].length + 1 - 1] = varg1;
+}
+
+function 0x98fd4b41(uint256 varg0, address varg1) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    return _setFlag[varg1][varg0];
+}
+
+function getBlob(address collection) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    v0 = 0x88a(_getBlob[collection].length);
+    v1 = new bytes[](v0);
+    v2 = v3 = v1.data;
+    v4 = 0x88a(_getBlob[collection].length);
+    if (v4) {
+        if (31 < v4) {
+            v5 = v6 = _getBlob[collection].data;
+            do {
+                MEM[v2] = STORAGE[v5];
+                v5 += 1;
+                v2 += 32;
+            } while (v3 + v4 > v2);
+        } else {
+            MEM[v3] = _getBlob[collection].length >> 8 << 8;
+        }
+    }
+    v7 = new bytes[](v1.length);
+    v8 = v9 = 0;
+    while (v8 < v1.length) {
+        v7[v8] = v1[v8];
+        v8 = v8 + 32;
+    }
+    if (v8 > v1.length) {
+        v7[v1.length] = 0;
+    }
+    return v7;
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    require(!msg.value);
+    if (msg.data.length < 4) {
+        fallback();
+    } else if (0xb32fe94f > function_selector >> 224) {
+        if (0xf3d0204 == function_selector >> 224) {
+            0x0f3d0204();
+        } else if (0x98fd4b41 == function_selector >> 224) {
+            0x98fd4b41();
+        } else if (0xa0439e80 == function_selector >> 224) {
+            getBlob(address);
+        } else {
+            require(0xb0a79459 == function_selector >> 224);
+            getBalance(uint256,address);
+        }
+    } else if (0xb32fe94f == function_selector >> 224) {
+        incrementBalance(uint256);
+    } else if (0xd40c79f0 == function_selector >> 224) {
+        setFlag(uint256);
+    } else if (0xdd7d5edb == function_selector >> 224) {
+        0xdd7d5edb();
+    } else {
+        require(0xf3490489 == function_selector >> 224);
+        getNumber(uint256,uint256);
+    }
+}

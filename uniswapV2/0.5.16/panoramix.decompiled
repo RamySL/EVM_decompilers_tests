@@ -1,0 +1,953 @@
+# Palkeoramix decompiler. 
+
+const name = 'Uniswap V2'
+const decimals = 18
+const symbol = 'UNI-V2'
+const PERMIT_TYPEHASH = 0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9
+const MINIMUM_LIQUIDITY = 1000
+
+def storage:
+  totalSupply is uint256 at storage 0
+  balanceOf is mapping of uint256 at storage 1
+  allowance is mapping of uint256 at storage 2
+  DOMAIN_SEPARATOR is uint256 at storage 3
+  nonces is mapping of uint256 at storage 4
+  factoryAddress is address at storage 5
+  token0Address is address at storage 6
+  token1Address is address at storage 7
+  stor8 is uint32 at storage 8 offset 224
+  stor8 is uint128 at storage 8
+  stor8 is uint128 at storage 8 offset 112
+  price0CumulativeLast is uint256 at storage 9
+  price1CumulativeLast is uint256 at storage 10
+  stor11 is uint256 at storage 11 offset 1
+  kLast is uint256 at storage 11
+  stor12 is uint256 at storage 12
+
+def token0() payable: 
+  return token0Address
+
+def totalSupply() payable: 
+  return totalSupply
+
+def DOMAIN_SEPARATOR() payable: 
+  return DOMAIN_SEPARATOR
+
+def price0CumulativeLast() payable: 
+  return price0CumulativeLast
+
+def price1CumulativeLast() payable: 
+  return price1CumulativeLast
+
+def balanceOf(address account) payable: 
+  return balanceOf[account]
+
+def kLast() payable: 
+  return kLast
+
+def nonces(address _param1) payable: 
+  return nonces[_param1]
+
+def factory() payable: 
+  return factoryAddress
+
+def token1() payable: 
+  return token1Address
+
+def allowance(address owner, address spender) payable: 
+  return allowance[owner][spender]
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  revert
+
+def getReserves() payable: 
+  return Mask(112, 0, stor8.field_0), Mask(112, 0, stor8.field_0), uint32(stor8.field_224)
+
+def initialize(address _token0, address _token1) payable: 
+  token0Address = _token0
+  token1Address = _token1
+
+def approve(address spender, uint256 amount) payable: 
+  allowance[caller][address(spender)] = amount
+  log Approval(
+        address owner=amount,
+        address spender=caller,
+        uint256 value=spender)
+  return 1
+
+def transfer(address recipient, uint256 amount) payable: 
+  balanceOf[caller] -= amount
+  balanceOf[address(recipient)] += amount
+  log Transfer(
+        address from=amount,
+        address to=caller,
+        uint256 value=recipient)
+  return 1
+
+def permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) payable: 
+  nonces[address(owner)]++
+  signer = erecover(sha3(0, DOMAIN_SEPARATOR, sha3(0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9, address(owner), address(spender), value, nonces[address(owner)], deadline)), v << 248, r, s) # precompiled
+  allowance[address(owner)][address(spender)] = value
+  log Approval(
+        address owner=value,
+        address spender=owner,
+        uint256 value=spender)
+
+def transferFrom(address sender, address recipient, uint256 amount) payable: 
+  if allowance[address(sender)][caller] != -1:
+      allowance[address(sender)][caller] -= amount
+  balanceOf[address(sender)] -= amount
+  balanceOf[address(recipient)] += amount
+  log Transfer(
+        address from=amount,
+        address to=sender,
+        uint256 value=recipient)
+  return 1
+
+def sync() payable: 
+  stor12 = 0
+  static call token0Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  static call token1Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+      if Mask(112, 0, stor8.field_0):
+          if Mask(112, 0, stor8.field_112):
+              price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+  Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+  Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+  uint32(stor8.field_224) = uint32(block.timestamp)
+  log Sync(
+        uint112 reserve0=Mask(112, 0, stor8.field_0),
+        uint112 reserve1=Mask(112, 0, stor8.field_112))
+  stor12 = 1
+
+def skim(address to) payable: 
+  stor12 = 0
+  static call token0Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  mem[260 len 64] = Mask(32, 224, sha3('transfer(address,uint256)')) >> 224, address(to) << 64, 0, Mask(224, 32, ext_call.return_data[0] - Mask(112, 0, stor8.field_0)) >> 32
+  call token0Address with:
+       gas gas_remaining wei
+      args Mask(224, 32, ext_call.return_data[0] - Mask(112, 0, stor8.field_0)) << 224, mem[324 len 4]
+  if not return_data.size:
+  mem[292 len return_data.size] = ext_call.return_data[0 len return_data.size]
+  if return_data.size:
+  static call token1Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  mem[ceil32(return_data.size) + 425 len 64] = Mask(32, 224, sha3('transfer(address,uint256)')) >> 224, address(to), Mask(224, 32, ext_call.return_data[0] - Mask(112, 0, stor8.field_112)) >> 32
+  call token1Address with:
+       gas gas_remaining wei
+      args ext_call.return_data[0] - Mask(112, 0, stor8.field_112), Mask(224, 32, address(to), Mask(224, 32, ext_call.return_data[0] - Mask(112, 0, stor8.field_112)) >> 32) >> 32, mem[ceil32(return_data.size) + 489 len 4]
+  if not return_data.size:
+  mem[ceil32(return_data.size) + 457 len return_data.size] = ext_call.return_data[0 len return_data.size]
+  if return_data.size:
+  stor12 = 1
+
+def burn(address to) payable: 
+  stor12 = 0
+  static call token0Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  static call token1Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  static call factoryAddress.feeTo() with:
+          gas gas_remaining wei
+  if not ext_call.return_data[12 len 20]:
+      if kLast:
+          kLast = 0
+      if not ext_call.return_data[0]:
+          if not ext_call.return_data[0]:
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+          else:
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+      else:
+          if not ext_call.return_data[0]:
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+          else:
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+                              32,
+                              40,
+                              0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                              mem[204 len 24]
+      balanceOf[address(this.address)] = 0
+      totalSupply -= balanceOf[address(this.address)]
+      log Transfer(
+            address from=balanceOf[address(this.address)],
+            address to=this.address,
+            uint256 value=0)
+  else:
+      if not kLast:
+          if not ext_call.return_data[0]:
+              if not ext_call.return_data[0]:
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+              else:
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+          else:
+              if not ext_call.return_data[0]:
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+              else:
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+                                  32,
+                                  40,
+                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                  mem[204 len 24]
+          balanceOf[address(this.address)] = 0
+          totalSupply -= balanceOf[address(this.address)]
+          log Transfer(
+                address from=balanceOf[address(this.address)],
+                address to=this.address,
+                uint256 value=0)
+      else:
+          if not Mask(112, 0, stor8.field_112):
+              if kLast <= 3:
+                  if not ext_call.return_data[0]:
+                      if not ext_call.return_data[0]:
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                      else:
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                  else:
+                      if not ext_call.return_data[0]:
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                      else:
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                                          32,
+                                          40,
+                                          0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                          mem[204 len 24]
+                  balanceOf[address(this.address)] = 0
+                  totalSupply -= balanceOf[address(this.address)]
+                  log Transfer(
+                        address from=balanceOf[address(this.address)],
+                        address to=this.address,
+                        uint256 value=0)
+          else:
+              if Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112) <= 3:
+                  if not Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112):
+                      if kLast <= 3:
+                          if not ext_call.return_data[0]:
+                              if not ext_call.return_data[0]:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                              else:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                          else:
+                              if not ext_call.return_data[0]:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                              else:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                          balanceOf[address(this.address)] = 0
+                          totalSupply -= balanceOf[address(this.address)]
+                          log Transfer(
+                                address from=balanceOf[address(this.address)],
+                                address to=this.address,
+                                uint256 value=0)
+                  else:
+                      if kLast <= 3:
+                          if not kLast:
+                              if totalSupply / 5 > 0:
+                                  totalSupply += totalSupply / 5
+                                  balanceOf[address(ext_call.return_data[0])] = balanceOf[ext_call.return_data[12 len 20]] + (totalSupply / 5)
+                                  log Transfer(
+                                        address from=(totalSupply / 5),
+                                        address to=0,
+                                        uint256 value=address(ext_call.return_data[0]))
+                          if not ext_call.return_data[0]:
+                              if not ext_call.return_data[0]:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                              else:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                          else:
+                              if not ext_call.return_data[0]:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                              else:
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                                                  32,
+                                                  40,
+                                                  0x59556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4255524e45,
+                                                  mem[204 len 24]
+                          balanceOf[address(this.address)] = 0
+                          totalSupply -= balanceOf[address(this.address)]
+                          log Transfer(
+                                address from=balanceOf[address(this.address)],
+                                address to=this.address,
+                                uint256 value=0)
+  ...  # Decompilation aborted, sorry: ("decompilation didn't finish",)
+
+def swap(uint256 amount0Out, uint256 amount1Out, address to, bytes data) payable: 
+  stor12 = 0
+  if amount0Out <= 0:
+                      32,
+                      37,
+                      0xfe556e697377617056323a20494e53554646494349454e545f4f55545055545f414d4f554e,
+                      mem[201 len 27]
+                  32,
+                  33,
+                  0x54556e697377617056323a20494e53554646494349454e545f4c49515549444954,
+                  mem[197 len 31]
+                  32,
+                  33,
+                  0x54556e697377617056323a20494e53554646494349454e545f4c49515549444954,
+                  mem[197 len 31]
+  if amount0Out > 0:
+      ...  # Decompilation aborted, sorry: ("decompilation didn't finish",)
+  if amount1Out > 0:
+      ...  # Decompilation aborted, sorry: ("decompilation didn't finish",)
+  if data.length <= 0:
+      static call token0Address.balanceOf(address account) with:
+              gas gas_remaining wei
+             args this.address
+      static call token1Address.balanceOf(address account) with:
+              gas gas_remaining wei
+             args this.address
+      if ext_call.return_data[0] <= Mask(112, 0, stor8.field_0) - amount0Out:
+                          32,
+                          36,
+                          0x54556e697377617056323a20494e53554646494349454e545f494e5055545f414d4f554e,
+                          mem[200 len 28]
+                          32,
+                          36,
+                          0x54556e697377617056323a20494e53554646494349454e545f494e5055545f414d4f554e,
+                          mem[200 len 28]
+          if not Mask(112, 0, stor8.field_112):
+              if (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+          else:
+              if not (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+              else:
+          if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+              if Mask(112, 0, stor8.field_0):
+                  if Mask(112, 0, stor8.field_112):
+                      price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                      price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+          Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+          Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+          uint32(stor8.field_224) = uint32(block.timestamp)
+          log Sync(
+                uint112 reserve0=Mask(112, 0, stor8.field_0),
+                uint112 reserve1=Mask(112, 0, stor8.field_112))
+          log Swap(
+                address sender=0,
+                uint256 amount0In=ext_call.return_data[0] - Mask(112, 0, stor8.field_112) + amount1Out,
+                uint256 amount1In=amount0Out,
+                uint256 amount0Out=amount1Out,
+                uint256 amount1Out=caller,
+                address to=to)
+      else:
+          if ext_call.return_data[0] <= Mask(112, 0, stor8.field_112) - amount1Out:
+                              32,
+                              36,
+                              0x54556e697377617056323a20494e53554646494349454e545f494e5055545f414d4f554e,
+                              mem[200 len 28]
+              if not Mask(112, 0, stor8.field_112):
+                  if 1000 * ext_call.return_data[0]:
+              else:
+                  if not 1000 * ext_call.return_data[0]:
+                  else:
+              if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+                  if Mask(112, 0, stor8.field_0):
+                      if Mask(112, 0, stor8.field_112):
+                          price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                          price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+              Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+              uint32(stor8.field_224) = uint32(block.timestamp)
+              log Sync(
+                    uint112 reserve0=Mask(112, 0, stor8.field_0),
+                    uint112 reserve1=Mask(112, 0, stor8.field_112))
+              log Swap(
+                    address sender=ext_call.return_data[0] - Mask(112, 0, stor8.field_0) + amount0Out,
+                    uint256 amount0In=0,
+                    uint256 amount1In=amount0Out,
+                    uint256 amount0Out=amount1Out,
+                    uint256 amount1Out=caller,
+                    address to=to)
+          else:
+              if ext_call.return_data[0] - Mask(112, 0, stor8.field_0) + amount0Out <= 0:
+                                  32,
+                                  36,
+                                  0x54556e697377617056323a20494e53554646494349454e545f494e5055545f414d4f554e,
+                                  mem[200 len 28]
+              if not Mask(112, 0, stor8.field_112):
+                  if (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+              else:
+                  if not (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+                  else:
+              if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+                  if Mask(112, 0, stor8.field_0):
+                      if Mask(112, 0, stor8.field_112):
+                          price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                          price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+              Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+              uint32(stor8.field_224) = uint32(block.timestamp)
+              log Sync(
+                    uint112 reserve0=Mask(112, 0, stor8.field_0),
+                    uint112 reserve1=Mask(112, 0, stor8.field_112))
+              log Swap(
+                    address sender=ext_call.return_data[0] - Mask(112, 0, stor8.field_0) + amount0Out,
+                    uint256 amount0In=ext_call.return_data[0] - Mask(112, 0, stor8.field_112) + amount1Out,
+                    uint256 amount1In=amount0Out,
+                    uint256 amount0Out=amount1Out,
+                    uint256 amount1Out=caller,
+                    address to=to)
+  else:
+      mem[260 len data.length] = data[all]
+      mem[data.length + 260] = 0
+      call to.uniswapV2Call(address sender, uint256 amount0, uint256 amount1, bytes data) with:
+           gas gas_remaining wei
+          args 0, uint32(caller), amount0Out, amount1Out, 128, data.length, data[all], mem[data.length + 260 len ceil32(data.length) - data.length]
+      static call token0Address.balanceOf(address account) with:
+              gas gas_remaining wei
+             args this.address
+      static call token1Address.balanceOf(address account) with:
+              gas gas_remaining wei
+             args this.address
+      if ext_call.return_data[0] <= Mask(112, 0, stor8.field_0) - amount0Out:
+          if not Mask(112, 0, stor8.field_112):
+              if (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+          else:
+              if not (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+              else:
+          if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+              if Mask(112, 0, stor8.field_0):
+                  if Mask(112, 0, stor8.field_112):
+                      price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                      price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+          Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+          Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+          uint32(stor8.field_224) = uint32(block.timestamp)
+          log Sync(
+                uint112 reserve0=Mask(112, 0, stor8.field_0),
+                uint112 reserve1=Mask(112, 0, stor8.field_112))
+          log Swap(
+                address sender=0,
+                uint256 amount0In=ext_call.return_data[0] - Mask(112, 0, stor8.field_112) + amount1Out,
+                uint256 amount1In=amount0Out,
+                uint256 amount0Out=amount1Out,
+                uint256 amount1Out=caller,
+                address to=to)
+      else:
+          if ext_call.return_data[0] <= Mask(112, 0, stor8.field_112) - amount1Out:
+              if not Mask(112, 0, stor8.field_112):
+                  if 1000 * ext_call.return_data[0]:
+              else:
+                  if not 1000 * ext_call.return_data[0]:
+                  else:
+              if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+                  if Mask(112, 0, stor8.field_0):
+                      if Mask(112, 0, stor8.field_112):
+                          price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                          price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+              Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+              uint32(stor8.field_224) = uint32(block.timestamp)
+              log Sync(
+                    uint112 reserve0=Mask(112, 0, stor8.field_0),
+                    uint112 reserve1=Mask(112, 0, stor8.field_112))
+              log Swap(
+                    address sender=ext_call.return_data[0] - Mask(112, 0, stor8.field_0) + amount0Out,
+                    uint256 amount0In=0,
+                    uint256 amount1In=amount0Out,
+                    uint256 amount0Out=amount1Out,
+                    uint256 amount1Out=caller,
+                    address to=to)
+          else:
+              if ext_call.return_data[0] - Mask(112, 0, stor8.field_0) + amount0Out <= 0:
+              if not Mask(112, 0, stor8.field_112):
+                  if (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+              else:
+                  if not (997 * ext_call.return_data[0]) + (3 * Mask(112, 0, stor8.field_112)) - (3 * amount1Out):
+                  else:
+              if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+                  if Mask(112, 0, stor8.field_0):
+                      if Mask(112, 0, stor8.field_112):
+                          price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                          price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+              Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+              uint32(stor8.field_224) = uint32(block.timestamp)
+              log Sync(
+                    uint112 reserve0=Mask(112, 0, stor8.field_0),
+                    uint112 reserve1=Mask(112, 0, stor8.field_112))
+              log Swap(
+                    address sender=ext_call.return_data[0] - Mask(112, 0, stor8.field_0) + amount0Out,
+                    uint256 amount0In=ext_call.return_data[0] - Mask(112, 0, stor8.field_112) + amount1Out,
+                    uint256 amount1In=amount0Out,
+                    uint256 amount0Out=amount1Out,
+                    uint256 amount1Out=caller,
+                    address to=to)
+  stor12 = 1
+
+def mint(address to) payable: 
+  stor12 = 0
+  static call token0Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  static call token1Address.balanceOf(address account) with:
+          gas gas_remaining wei
+         args this.address
+  static call factoryAddress.feeTo() with:
+          gas gas_remaining wei
+  if not ext_call.return_data[12 len 20]:
+      if kLast:
+          kLast = 0
+  else:
+      if kLast:
+          if not Mask(112, 0, stor8.field_112):
+              if kLast > 3:
+                  s = stor11 + 1
+                  t = kLast
+                  while s < t:
+                      s = (kLast / s) + s / 2
+                      t = s
+                      continue 
+                  if 0 > t:
+                      if not -t:
+                          if 0 / t > 0:
+                              totalSupply += 0 / t
+                              _16989 = sha3(ext_call.return_data[12 len 20], 1)
+                              balanceOf[address(ext_call.return_data[0])] = stor[_16989] + (0 / t)
+                              log Transfer(
+                                    address from=(0 / t),
+                                    address to=0,
+                                    uint256 value=address(ext_call.return_data[0]))
+                      else:
+                          if -1 * totalSupply * t / t > 0:
+                              totalSupply += -1 * totalSupply * t / t
+                              _17067 = sha3(ext_call.return_data[12 len 20], 1)
+                              balanceOf[address(ext_call.return_data[0])] = stor[_17067] + (-1 * totalSupply * t / t)
+                              log Transfer(
+                                    address from=(-1 * totalSupply * t / t),
+                                    address to=0,
+                                    uint256 value=address(ext_call.return_data[0]))
+          else:
+              if Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112) <= 3:
+                  if not Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112):
+                      if kLast > 3:
+                          s = stor11 + 1
+                          t = kLast
+                          while s < t:
+                              s = (kLast / s) + s / 2
+                              t = s
+                              continue 
+                          if 0 > t:
+                              if not -t:
+                                  if 0 / t > 0:
+                                      totalSupply += 0 / t
+                                      _16994 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_16994] + (0 / t)
+                                      log Transfer(
+                                            address from=(0 / t),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                              else:
+                                  if -1 * totalSupply * t / t > 0:
+                                      totalSupply += -1 * totalSupply * t / t
+                                      _17079 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_17079] + (-1 * totalSupply * t / t)
+                                      log Transfer(
+                                            address from=(-1 * totalSupply * t / t),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                  else:
+                      if kLast <= 3:
+                          if not kLast:
+                              if totalSupply / 5 > 0:
+                                  totalSupply += totalSupply / 5
+                                  _806 = sha3(ext_call.return_data[12 len 20], 1)
+                                  balanceOf[address(ext_call.return_data[0])] = stor[_806] + (totalSupply / 5)
+                                  log Transfer(
+                                        address from=(totalSupply / 5),
+                                        address to=0,
+                                        uint256 value=address(ext_call.return_data[0]))
+                      else:
+                          s = stor11 + 1
+                          t = kLast
+                          while s < t:
+                              s = (kLast / s) + s / 2
+                              t = s
+                              continue 
+                          if 1 > t:
+                              if not -t + 1:
+                                  if 0 / t + 5 > 0:
+                                      totalSupply += 0 / t + 5
+                                      _16999 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_16999] + (0 / t + 5)
+                                      log Transfer(
+                                            address from=(0 / t + 5),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                              else:
+                                  if totalSupply - (t * totalSupply) / t + 5 > 0:
+                                      totalSupply += totalSupply - (t * totalSupply) / t + 5
+                                      _17093 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_17093] + (totalSupply - (t * totalSupply) / t + 5)
+                                      log Transfer(
+                                            address from=(totalSupply - (t * totalSupply) / t + 5),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+              else:
+                  s = (Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112) / 2) + 1
+                  t = Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112)
+                  while s < t:
+                      s = (Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112) / s) + s / 2
+                      t = s
+                      continue 
+                  if kLast <= 3:
+                      if not kLast:
+                          if t > 0:
+                              if not t:
+                                  if 0 / 5 * t > 0:
+                                      totalSupply += 0 / 5 * t
+                                      _17183 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_17183] + (0 / 5 * t)
+                                      log Transfer(
+                                            address from=(0 / 5 * t),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                              else:
+                                  if totalSupply * t / 5 * t > 0:
+                                      totalSupply += totalSupply * t / 5 * t
+                                      _17292 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_17292] + (totalSupply * t / 5 * t)
+                                      log Transfer(
+                                            address from=(totalSupply * t / 5 * t),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                      else:
+                          if t > 1:
+                              if not t - 1:
+                                  if 0 / (5 * t) + 1 > 0:
+                                      totalSupply += 0 / (5 * t) + 1
+                                      _17244 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_17244] + (0 / (5 * t) + 1)
+                                      log Transfer(
+                                            address from=(0 / (5 * t) + 1),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                              else:
+                                  if -totalSupply + (t * totalSupply) / (5 * t) + 1 > 0:
+                                      totalSupply += -totalSupply + (t * totalSupply) / (5 * t) + 1
+                                      _17386 = sha3(ext_call.return_data[12 len 20], 1)
+                                      balanceOf[address(ext_call.return_data[0])] = stor[_17386] + (-totalSupply + (t * totalSupply) / (5 * t) + 1)
+                                      log Transfer(
+                                            address from=(-totalSupply + (t * totalSupply) / (5 * t) + 1),
+                                            address to=0,
+                                            uint256 value=address(ext_call.return_data[0]))
+                  else:
+                      s = stor11 + 1
+                      u = kLast
+                      while s < u:
+                          s = (kLast / s) + s / 2
+                          u = s
+                          continue 
+                      if t > u:
+                          if not t - u:
+                              if 0 / (5 * t) + u > 0:
+                                  totalSupply += 0 / (5 * t) + u
+                                  _30595 = sha3(ext_call.return_data[12 len 20], 1)
+                                  balanceOf[address(ext_call.return_data[0])] = stor[_30595] + (0 / (5 * t) + u)
+                                  log Transfer(
+                                        address from=(0 / (5 * t) + u),
+                                        address to=0,
+                                        uint256 value=address(ext_call.return_data[0]))
+                          else:
+                              if (t * totalSupply) - (u * totalSupply) / (5 * t) + u > 0:
+                                  totalSupply += (t * totalSupply) - (u * totalSupply) / (5 * t) + u
+                                  _30707 = sha3(ext_call.return_data[12 len 20], 1)
+                                  balanceOf[address(ext_call.return_data[0])] = stor[_30707] + ((t * totalSupply) - (u * totalSupply) / (5 * t) + u)
+                                  log Transfer(
+                                        address from=((t * totalSupply) - (u * totalSupply) / (5 * t) + u),
+                                        address to=0,
+                                        uint256 value=address(ext_call.return_data[0]))
+  if totalSupply:
+      if not totalSupply:
+          if (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0) < 0 / Mask(112, 0, stor8.field_112):
+                              32,
+                              40,
+                              0x44556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4d494e5445,
+                              mem[204 len 24]
+              totalSupply += (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0)
+              balanceOf[address(to)] += (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0)
+              log Transfer(
+                    address from=((ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0)),
+                    address to=0,
+                    uint256 value=to)
+              if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+                  if Mask(112, 0, stor8.field_0):
+                      if Mask(112, 0, stor8.field_112):
+                          price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                          price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+              Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+              uint32(stor8.field_224) = uint32(block.timestamp)
+              log Sync(
+                    uint112 reserve0=Mask(112, 0, stor8.field_0),
+                    uint112 reserve1=Mask(112, 0, stor8.field_112))
+              if address(ext_call.return_data[0]):
+                  if not Mask(112, 0, stor8.field_112):
+                      kLast = 0
+                  else:
+                      kLast = Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112)
+              log Mint(
+                    address minter=ext_call.return_data[0] - Mask(112, 0, stor8.field_0),
+                    uint256 mintAmount=ext_call.return_data[0] - Mask(112, 0, stor8.field_112),
+                    uint256 mintTokens=caller)
+              stor12 = 1
+              return ((ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0))
+                          32,
+                          40,
+                          0x44556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4d494e5445,
+                          mem[204 len 24]
+          totalSupply += 0 / Mask(112, 0, stor8.field_112)
+          balanceOf[address(to)] += 0 / Mask(112, 0, stor8.field_112)
+          log Transfer(
+                address from=(0 / Mask(112, 0, stor8.field_112)),
+                address to=0,
+                uint256 value=to)
+          if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+              if Mask(112, 0, stor8.field_0):
+                  if Mask(112, 0, stor8.field_112):
+                      price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                      price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+          Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+          Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+          uint32(stor8.field_224) = uint32(block.timestamp)
+          log Sync(
+                uint112 reserve0=Mask(112, 0, stor8.field_0),
+                uint112 reserve1=Mask(112, 0, stor8.field_112))
+          if address(ext_call.return_data[0]):
+              if not Mask(112, 0, stor8.field_112):
+                  kLast = 0
+              else:
+                  kLast = Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112)
+          log Mint(
+                address minter=ext_call.return_data[0] - Mask(112, 0, stor8.field_0),
+                uint256 mintAmount=ext_call.return_data[0] - Mask(112, 0, stor8.field_112),
+                uint256 mintTokens=caller)
+          stor12 = 1
+          return (0 / Mask(112, 0, stor8.field_112))
+      if (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0) < (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_112) * totalSupply) / Mask(112, 0, stor8.field_112):
+                          32,
+                          40,
+                          0x44556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4d494e5445,
+                          mem[204 len 24]
+          totalSupply += (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0)
+          balanceOf[address(to)] += (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0)
+          log Transfer(
+                address from=((ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0)),
+                address to=0,
+                uint256 value=to)
+          if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+              if Mask(112, 0, stor8.field_0):
+                  if Mask(112, 0, stor8.field_112):
+                      price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                      price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+          Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+          Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+          uint32(stor8.field_224) = uint32(block.timestamp)
+          log Sync(
+                uint112 reserve0=Mask(112, 0, stor8.field_0),
+                uint112 reserve1=Mask(112, 0, stor8.field_112))
+          if address(ext_call.return_data[0]):
+              if not Mask(112, 0, stor8.field_112):
+                  kLast = 0
+              else:
+                  kLast = Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112)
+          log Mint(
+                address minter=ext_call.return_data[0] - Mask(112, 0, stor8.field_0),
+                uint256 mintAmount=ext_call.return_data[0] - Mask(112, 0, stor8.field_112),
+                uint256 mintTokens=caller)
+          stor12 = 1
+          return ((ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_0) * totalSupply) / Mask(112, 0, stor8.field_0))
+                      32,
+                      40,
+                      0x44556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4d494e5445,
+                      mem[204 len 24]
+      totalSupply += (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_112) * totalSupply) / Mask(112, 0, stor8.field_112)
+      balanceOf[address(to)] += (ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_112) * totalSupply) / Mask(112, 0, stor8.field_112)
+      log Transfer(
+            address from=((ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_112) * totalSupply) / Mask(112, 0, stor8.field_112)),
+            address to=0,
+            uint256 value=to)
+      if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+          if Mask(112, 0, stor8.field_0):
+              if Mask(112, 0, stor8.field_112):
+                  price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+                  price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+      Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+      Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+      uint32(stor8.field_224) = uint32(block.timestamp)
+      log Sync(
+            uint112 reserve0=Mask(112, 0, stor8.field_0),
+            uint112 reserve1=Mask(112, 0, stor8.field_112))
+      if address(ext_call.return_data[0]):
+          if not Mask(112, 0, stor8.field_112):
+              kLast = 0
+          else:
+              kLast = Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112)
+      log Mint(
+            address minter=ext_call.return_data[0] - Mask(112, 0, stor8.field_0),
+            uint256 mintAmount=ext_call.return_data[0] - Mask(112, 0, stor8.field_112),
+            uint256 mintTokens=caller)
+      stor12 = 1
+      return ((ext_call.return_data[0] * totalSupply) - (Mask(112, 0, stor8.field_112) * totalSupply) / Mask(112, 0, stor8.field_112))
+  s = ((ext_call.return_data[0] * ext_call.return_data[0]) - (Mask(112, 0, stor8.field_112) * ext_call.return_data[0]) - (ext_call.return_data[0] * Mask(112, 0, stor8.field_0)) + (Mask(112, 0, stor8.field_112) * Mask(112, 0, stor8.field_0)) / 2) + 1
+  t = (ext_call.return_data[0] * ext_call.return_data[0]) - (Mask(112, 0, stor8.field_112) * ext_call.return_data[0]) - (ext_call.return_data[0] * Mask(112, 0, stor8.field_0)) + (Mask(112, 0, stor8.field_112) * Mask(112, 0, stor8.field_0))
+  while s < t:
+      s = ((ext_call.return_data[0] * ext_call.return_data[0]) - (Mask(112, 0, stor8.field_112) * ext_call.return_data[0]) - (ext_call.return_data[0] * Mask(112, 0, stor8.field_0)) + (Mask(112, 0, stor8.field_112) * Mask(112, 0, stor8.field_0)) / s) + s / 2
+      t = s
+      continue 
+  totalSupply += 1000
+  balanceOf[0] += 1000
+  log Transfer(address from, address to, uint256 value):
+               1000,
+  log 0x0: 1000
+  log 0x0: 1000
+                  32,
+                  40,
+                  0x44556e697377617056323a20494e53554646494349454e545f4c49515549444954595f4d494e5445,
+                  mem[204 len 24]
+  totalSupply = totalSupply + t - 1000
+  balanceOf[address(to)] = balanceOf[address(to)] + t - 1000
+  log Transfer(
+        address from=(t - 1000),
+        address to=0,
+        uint256 value=to)
+  if uint32(uint32(block.timestamp) - uint32(stor8.field_224)) > 0:
+      if Mask(112, 0, stor8.field_0):
+          if Mask(112, 0, stor8.field_112):
+              price0CumulativeLast += Mask(224, 0, Mask(112, 0, Mask(112, 0, stor8.field_112)) << 112 / Mask(112, 0, stor8.field_0)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+              price1CumulativeLast += Mask(224, 0, Mask(112, 0, stor8.field_0) / Mask(112, 0, stor8.field_112)) * uint32(uint32(block.timestamp) - uint32(stor8.field_224))
+  Mask(112, 0, stor8.field_0) = Mask(112, 0, ext_call.return_data[0])
+  Mask(112, 0, stor8.field_112) = Mask(112, 0, ext_call.return_data[0])
+  uint32(stor8.field_224) = uint32(block.timestamp)
+  log Sync(
+        uint112 reserve0=Mask(112, 0, stor8.field_0),
+        uint112 reserve1=Mask(112, 0, stor8.field_112))
+  if address(ext_call.return_data[0]):
+      if not Mask(112, 0, stor8.field_112):
+          kLast = 0
+      else:
+          kLast = Mask(112, 0, stor8.field_0) * Mask(112, 0, stor8.field_112)
+  log Mint(
+        address minter=ext_call.return_data[0] - Mask(112, 0, stor8.field_0),
+        uint256 mintAmount=ext_call.return_data[0] - Mask(112, 0, stor8.field_112),
+        uint256 mintTokens=caller)
+  stor12 = 1
+  return (t - 1000)
+
+

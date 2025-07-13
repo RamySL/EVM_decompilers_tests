@@ -1,0 +1,125 @@
+// Decompiled by library.dedaub.com
+// 2025.07.01 21:34 UTC
+// Compiled using the solidity compiler version 0.8.0
+
+
+
+
+
+function 0x8719814c(uint256 varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    v0 = v1 = 0;
+    v2 = v3 = 0;
+    while (v2 < varg0) {
+        require(2, Panic(18)); // division by zero
+        if (v2 % 2 != 0) {
+            if (v2 <= 10) {
+                v0 = _SafeAdd(v0, v2);
+            } else {
+                // Unknown jump to Block 0x141. Refer to 3-address code (TAC);
+            }
+        }
+        v2 = 0x430(v2);
+    }
+    return v0;
+}
+
+function 0x950b9954(uint256 varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    if (varg0 >= 10) {
+        if (varg0 >= 20) {
+            v0 = v1 = 3;
+        } else {
+            v0 = v2 = 2;
+        }
+    } else {
+        v0 = v3 = 1;
+    }
+    return v0;
+}
+
+function _SafeAdd(uint256 varg0, uint256 varg1) private { 
+    require(varg0 <= uint256.max - varg1, Panic(17)); // arithmetic overflow or underflow
+    return varg0 + varg1;
+}
+
+function 0x406(uint256 varg0) private { 
+    require(varg0 != 0, Panic(17)); // arithmetic overflow or underflow
+    return varg0 - 1;
+}
+
+function 0x430(uint256 varg0) private { 
+    require(varg0 != uint256.max, Panic(17)); // arithmetic overflow or underflow
+    return varg0 + 1;
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function 0x07b53e4a(uint256 varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    v0 = v1 = 0;
+    while (1) {
+        v0 = 0x430(v0);
+        v2 = 0x406(v2);
+        if (v2 <= 0) {
+            return v0;
+        }
+    }
+}
+
+function 0x456901e4(uint256 varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    v0 = v1 = 0;
+    v2 = v3 = 0;
+    while (v2 < varg0) {
+        v0 = _SafeAdd(v0, v2);
+        v2 = 0x430(v2);
+    }
+    return v0;
+}
+
+function 0x50d1f082(uint256 varg0, uint256 varg1) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    if (varg0 > 0) {
+        if (varg1 > 0) {
+            v0 = v1 = _SafeAdd(varg0, varg1);
+        }
+    }
+    return v0;
+}
+
+function 0x5a5e80e7(uint256 varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    v0 = v1 = 0;
+    while (v2 > 0) {
+        v2 = 0x406(v2);
+        v0 = 0x430(v0);
+    }
+    return v0;
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    require(!msg.value);
+    if (msg.data.length >= 4) {
+        if (0x7b53e4a == function_selector >> 224) {
+            0x07b53e4a();
+        } else if (0x456901e4 == function_selector >> 224) {
+            0x456901e4();
+        } else if (0x50d1f082 == function_selector >> 224) {
+            0x50d1f082();
+        } else if (0x5a5e80e7 == function_selector >> 224) {
+            0x5a5e80e7();
+        } else if (0x8719814c == function_selector >> 224) {
+            0x8719814c();
+        } else if (0x950b9954 == function_selector >> 224) {
+            0x950b9954();
+        }
+    }
+    fallback();
+}

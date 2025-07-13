@@ -1,0 +1,53 @@
+// Decompiled by library.dedaub.com
+// 2025.07.02 13:08 UTC
+// Compiled using the solidity compiler version 0.8.0
+
+
+// Data structures and variables inferred from the use of storage instructions
+uint256 _getState; // STORAGE[0x0]
+
+
+
+function _SafeAdd(uint256 varg0, uint256 varg1) private { 
+    require(varg1 <= uint256.max - varg0, Panic(17)); // arithmetic overflow or underflow
+    return varg1 + varg0;
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function getState() public payable { 
+    return _getState;
+}
+
+function add(uint256 allocPoint, uint256 _pid) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    v0 = _SafeAdd(_pid, allocPoint);
+    return v0;
+}
+
+function 0xf60abe83(uint256 varg0, uint256 varg1, bool varg2) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 96);
+    v0 = _SafeAdd(varg1, varg0);
+    require(v0 != uint256.max, Panic(17)); // arithmetic overflow or underflow
+    return varg2;
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    require(!msg.value);
+    if (msg.data.length >= 4) {
+        if (0x1865c57d == function_selector >> 224) {
+            getState();
+        } else if (0x771602f7 == function_selector >> 224) {
+            add(uint256,uint256);
+        } else if (0xf60abe83 == function_selector >> 224) {
+            0xf60abe83();
+        }
+    }
+    fallback();
+}

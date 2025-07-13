@@ -1,0 +1,92 @@
+// Decompiled by library.dedaub.com
+// 2025.07.02 08:28 UTC
+// Compiled using the solidity compiler version 0.4.7<=v<0.5.9
+
+
+// Data structures and variables inferred from the use of storage instructions
+uint256 _getState; // STORAGE[0x0]
+
+
+
+function add(uint256 allocPoint, uint256 _pid) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    return allocPoint + _pid;
+}
+
+function 0xa6b884da(bytes varg0, bytes varg1) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    require(varg0 <= uint32.max + 1);
+    require(varg0.data <= 4 + (msg.data.length - 4));
+    require(!((varg0.length > uint32.max + 1) | (varg0.data + varg0.length > 4 + (msg.data.length - 4))));
+    require(varg1 <= uint32.max + 1);
+    require(varg1.data <= 4 + (msg.data.length - 4));
+    require(!((varg1.length > uint32.max + 1) | (varg1.data + varg1.length > 4 + (msg.data.length - 4))));
+    CALLDATACOPY(32 + MEM[64], varg0.data, varg0.length);
+    CALLDATACOPY(32 + MEM[64] + varg0.length, varg1.data, varg1.length);
+    v0 = 32 + MEM[64] + varg0.length + varg1.length - MEM[64] - 32;
+    v1 = v2 = 0;
+    while (v1 < v0) {
+        assert(v1 < v0);
+        v3 = v4 = bytes1(MEM[32 + MEM[64] + v1] >> 248 << 248) >= 0x6100000000000000000000000000000000000000000000000000000000000000;
+        if (bytes1(MEM[32 + MEM[64] + v1] >> 248 << 248) >= 0x6100000000000000000000000000000000000000000000000000000000000000) {
+            assert(v1 < v0);
+            v3 = bytes1(MEM[32 + MEM[64] + v1] >> 248 << 248) <= 0x7a00000000000000000000000000000000000000000000000000000000000000;
+        }
+        if (v3) {
+            assert(v1 < v0);
+            assert(v1 < v0);
+            MEM8[32 + MEM[64] + v1] = (byte(bytes1((MEM[32 + MEM[64] + v1] >> 248 << 248 >> 248) - 32 << 248), 0x0)) & 0xFF;
+        }
+        v1 += 1;
+    }
+    v5 = new uint256[](v0);
+    v6 = v7 = 0;
+    while (v6 < v0) {
+        MEM[v5.data + v6] = MEM[32 + MEM[64] + v6];
+        v6 = v6 + 32;
+    }
+    v8 = v9 = v0 + v5.data;
+    if (0x1f & v0) {
+        MEM[v9 - (0x1f & v0)] = ~((uint8.max + 1) ** (32 - (0x1f & v0)) - 1) & MEM[v9 - (0x1f & v0)];
+    }
+    return v5;
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function getState() public nonPayable { 
+    return _getState;
+}
+
+function 0x30cd79b9(uint256 varg0) public nonPayable { 
+    require(msg.data.length - 4 >= 32);
+    _getState = _getState + varg0;
+}
+
+function 0x3ce8848c(uint256 varg0, uint256 varg1) public nonPayable { 
+    require(msg.data.length - 4 >= 64);
+    return varg0 * varg1 + _getState;
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    if (msg.data.length >= 4) {
+        if (0x1865c57d == uint32(function_selector >> 224)) {
+            getState();
+        } else if (0x30cd79b9 == uint32(function_selector >> 224)) {
+            0x30cd79b9();
+        } else if (0x3ce8848c == uint32(function_selector >> 224)) {
+            0x3ce8848c();
+        } else if (0x771602f7 == uint32(function_selector >> 224)) {
+            add(uint256,uint256);
+        } else if (0xa6b884da == uint32(function_selector >> 224)) {
+            0xa6b884da();
+        }
+    }
+    fallback();
+}

@@ -1,0 +1,190 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  totalSupply is uint256 at storage 0
+  balances is mapping of uint256 at storage 1
+  allowed is mapping of uint256 at storage 2
+  stor3 is array of struct at storage 3
+  decimals is uint8 at storage 4
+  stor5 is array of struct at storage 5
+
+def totalSupply() payable: 
+  return totalSupply
+
+def balances(address _param1) payable: 
+  return balances[_param1]
+
+def decimals() payable: 
+  return decimals
+
+def allowed(address _param1, address _param2) payable: 
+  return allowed[_param1][_param2]
+
+def balanceOf(address account) payable: 
+  return balances[address(account)]
+
+def allowance(address owner, address spender) payable: 
+  return allowed[address(owner)][address(spender)]
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  revert
+
+def approve(address spender, uint256 amount) payable: 
+  allowed[caller][address(spender)] = amount
+  log Approval(
+        address owner=amount,
+        address spender=caller,
+        uint256 value=spender)
+  return 1
+
+def transfer(address recipient, uint256 amount) payable: 
+  balances[caller] -= amount
+  balances[address(recipient)] += amount
+  log Transfer(
+        address from=amount,
+        address to=caller,
+        uint256 value=recipient)
+  return 1
+
+def transferFrom(address sender, address recipient, uint256 amount) payable: 
+  balances[address(recipient)] += amount
+  balances[address(sender)] -= amount
+  if allowed[address(sender)][caller] < -1:
+      allowed[address(sender)][caller] -= amount
+  log Transfer(
+        address from=amount,
+        address to=sender,
+        uint256 value=recipient)
+  return 1
+
+def name() payable: 
+  if bool(stor3.length):
+      if bool(stor3.length):
+          if stor3.length.field_1:
+              if 31 < stor3.length.field_1:
+                  mem[128] = uint256(stor3.field_0)
+                  idx = 128
+                  s = 0
+                  while stor3.length.field_1 + 96 > idx:
+                      mem[idx + 32] = stor3[s].field_256
+                      idx = idx + 32
+                      s = s + 1
+                      continue 
+                  return Array(len=2 * Mask(256, -1, stor3.length.field_1), data=mem[128 len ceil32(stor3.length.field_1)])
+              mem[128] = 256 * stor3.length.field_8
+      else:
+          if stor3.length.field_1:
+              if 31 < stor3.length.field_1:
+                  mem[128] = uint256(stor3.field_0)
+                  idx = 128
+                  s = 0
+                  while stor3.length.field_1 + 96 > idx:
+                      mem[idx + 32] = stor3[s].field_256
+                      idx = idx + 32
+                      s = s + 1
+                      continue 
+                  return Array(len=2 * Mask(256, -1, stor3.length.field_1), data=mem[128 len ceil32(stor3.length.field_1)])
+              mem[128] = 256 * stor3.length.field_8
+      mem[ceil32(stor3.length.field_1) + 192 len ceil32(stor3.length.field_1)] = mem[128 len ceil32(stor3.length.field_1)]
+      if ceil32(stor3.length.field_1) > stor3.length.field_1:
+          mem[ceil32(stor3.length.field_1) + stor3.length.field_1 + 192] = 0
+      return Array(len=2 * Mask(256, -1, stor3.length.field_1), data=mem[128 len ceil32(stor3.length.field_1)], mem[(2 * ceil32(stor3.length.field_1)) + 192 len 2 * ceil32(stor3.length.field_1)]), 
+  if bool(stor3.length):
+      if stor3.length.field_1:
+          if 31 < stor3.length.field_1:
+              mem[128] = uint256(stor3.field_0)
+              idx = 128
+              s = 0
+              while stor3.length.field_1 + 96 > idx:
+                  mem[idx + 32] = stor3[s].field_256
+                  idx = idx + 32
+                  s = s + 1
+                  continue 
+              return Array(len=stor3.length % 128, data=mem[128 len ceil32(stor3.length.field_1)])
+          mem[128] = 256 * stor3.length.field_8
+  else:
+      if stor3.length.field_1:
+          if 31 < stor3.length.field_1:
+              mem[128] = uint256(stor3.field_0)
+              idx = 128
+              s = 0
+              while stor3.length.field_1 + 96 > idx:
+                  mem[idx + 32] = stor3[s].field_256
+                  idx = idx + 32
+                  s = s + 1
+                  continue 
+              return Array(len=stor3.length % 128, data=mem[128 len ceil32(stor3.length.field_1)])
+          mem[128] = 256 * stor3.length.field_8
+  mem[ceil32(stor3.length.field_1) + 192 len ceil32(stor3.length.field_1)] = mem[128 len ceil32(stor3.length.field_1)]
+  if ceil32(stor3.length.field_1) > stor3.length.field_1:
+      mem[ceil32(stor3.length.field_1) + stor3.length.field_1 + 192] = 0
+  return Array(len=stor3.length % 128, data=mem[128 len ceil32(stor3.length.field_1)], mem[(2 * ceil32(stor3.length.field_1)) + 192 len 2 * ceil32(stor3.length.field_1)]), 
+
+def symbol() payable: 
+  if bool(stor5.length):
+      if bool(stor5.length):
+          if stor5.length.field_1:
+              if 31 < stor5.length.field_1:
+                  mem[128] = uint256(stor5.field_0)
+                  idx = 128
+                  s = 0
+                  while stor5.length.field_1 + 96 > idx:
+                      mem[idx + 32] = stor5[s].field_256
+                      idx = idx + 32
+                      s = s + 1
+                      continue 
+                  return Array(len=2 * Mask(256, -1, stor5.length.field_1), data=mem[128 len ceil32(stor5.length.field_1)])
+              mem[128] = 256 * stor5.length.field_8
+      else:
+          if stor5.length.field_1:
+              if 31 < stor5.length.field_1:
+                  mem[128] = uint256(stor5.field_0)
+                  idx = 128
+                  s = 0
+                  while stor5.length.field_1 + 96 > idx:
+                      mem[idx + 32] = stor5[s].field_256
+                      idx = idx + 32
+                      s = s + 1
+                      continue 
+                  return Array(len=2 * Mask(256, -1, stor5.length.field_1), data=mem[128 len ceil32(stor5.length.field_1)])
+              mem[128] = 256 * stor5.length.field_8
+      mem[ceil32(stor5.length.field_1) + 192 len ceil32(stor5.length.field_1)] = mem[128 len ceil32(stor5.length.field_1)]
+      if ceil32(stor5.length.field_1) > stor5.length.field_1:
+          mem[ceil32(stor5.length.field_1) + stor5.length.field_1 + 192] = 0
+      return Array(len=2 * Mask(256, -1, stor5.length.field_1), data=mem[128 len ceil32(stor5.length.field_1)], mem[(2 * ceil32(stor5.length.field_1)) + 192 len 2 * ceil32(stor5.length.field_1)]), 
+  if bool(stor5.length):
+      if stor5.length.field_1:
+          if 31 < stor5.length.field_1:
+              mem[128] = uint256(stor5.field_0)
+              idx = 128
+              s = 0
+              while stor5.length.field_1 + 96 > idx:
+                  mem[idx + 32] = stor5[s].field_256
+                  idx = idx + 32
+                  s = s + 1
+                  continue 
+              return Array(len=stor5.length % 128, data=mem[128 len ceil32(stor5.length.field_1)])
+          mem[128] = 256 * stor5.length.field_8
+  else:
+      if stor5.length.field_1:
+          if 31 < stor5.length.field_1:
+              mem[128] = uint256(stor5.field_0)
+              idx = 128
+              s = 0
+              while stor5.length.field_1 + 96 > idx:
+                  mem[idx + 32] = stor5[s].field_256
+                  idx = idx + 32
+                  s = s + 1
+                  continue 
+              return Array(len=stor5.length % 128, data=mem[128 len ceil32(stor5.length.field_1)])
+          mem[128] = 256 * stor5.length.field_8
+  mem[ceil32(stor5.length.field_1) + 192 len ceil32(stor5.length.field_1)] = mem[128 len ceil32(stor5.length.field_1)]
+  if ceil32(stor5.length.field_1) > stor5.length.field_1:
+      mem[ceil32(stor5.length.field_1) + stor5.length.field_1 + 192] = 0
+  return Array(len=stor5.length % 128, data=mem[128 len ceil32(stor5.length.field_1)], mem[(2 * ceil32(stor5.length.field_1)) + 192 len 2 * ceil32(stor5.length.field_1)]), 
+
+

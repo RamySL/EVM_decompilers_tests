@@ -1,0 +1,228 @@
+function createEIP20(uint256 _args1, string _args2, uint8 _args3, string _args4) public {
+// block 0x72
+  require(0 == msg.value);
+  unknown var2 = _args1;
+  m[$m] = _argsvar5
+  calldatacopy(0x20 + $m, 0x20 + (0x4 + _args2), _argsvar5);
+  unknown var3 = $m;
+  unknown var10 = $m + (0x20 + (0x20 * ((0x1f + _argsvar5) / 0x20)));
+  uint $m = ($m + (0x20 + (0x20 * ((0x1f + _argsvar5) / 0x20)))) + (0x20 + (0x20 * ((0x1f + _argsvar7) / 0x20)));
+  m[var10] = _argsvar7
+  calldatacopy(0x20 + var10, 0x20 + (0x4 + _args4), _argsvar7);
+  codecopy($m, 0x91b, 0xdd1);
+  uint var12 = 0xdd1 + $m;
+  m[0xdd1 + $m] = var2
+  m[0x20 + (0x20 + (0xdd1 + $m))] = 0xff & (0xff & _args3)
+  uint var14 = 0x20 + (0x20 + (0x20 + (0xdd1 + $m)));
+  m[0x20 + (0xdd1 + $m)] = (0x20 + (0x20 + (0x20 + (0x20 + (0xdd1 + $m))))) - (0xdd1 + $m)
+  m[0x20 + (0x20 + (0x20 + (0x20 + (0xdd1 + $m))))] = m[var3]
+  uint var15 = 0x20 + (0x20 + (0x20 + (0x20 + (0x20 + (0xdd1 + $m)))));
+  unknown swap = m[var3];
+  uint var16 = 0x20 + var3;
+  unknown var21 = 0x0;
+  while (true) {
+    if (var21 >= swap) {
+      break;
+    }
+
+    m[var15 + var21] = m[var16 + var21]
+    uint var21 = 0x20 + var21;
+  }
+  unknown var16 = swap;
+  unknown swap = var15;
+  unknown var15 = var16;
+  uint var16 = var16 + swap;
+  unknown swap = var15;
+  unknown var15 = var16;
+  unknown var16 = 0x1f & swap;
+  if (0x1f & swap) {
+    m[var15 - var16] = (! ((0x100 ** (0x20 - var16)) - 0x1)) & m[var15 - var16]
+    uint var15 = 0x20 + (var15 - var16);
+  }
+  m[var14] = var15 - var12
+  m[var15] = m[var10]
+  uint var15 = 0x20 + var15;
+  unknown swap = m[var10];
+  uint var16 = 0x20 + var10;
+  unknown var21 = 0x0;
+  while (true) {
+    if (var21 >= swap) {
+      break;
+    }
+
+    m[var15 + var21] = m[var16 + var21]
+    uint var21 = 0x20 + var21;
+  }
+  unknown var16 = swap;
+  unknown swap = var15;
+  unknown var15 = var16;
+  uint var16 = var16 + swap;
+  unknown swap = var15;
+  unknown var15 = var16;
+  unknown var16 = 0x1f & swap;
+  if (0x1f & swap) {
+    m[var15 - var16] = (! ((0x100 ** (0x20 - var16)) - 0x1)) & m[var15 - var16]
+    uint var15 = 0x20 + (var15 - var16);
+  }
+  require(0 != create(0x0, $m, (var15 - $m)););
+  unknown var7 = create(0x0, $m, var15 - $m);;
+  unknown var8 = sha3r(msg.sender, 0x0);
+  unknown var9 = s[var8];
+  uint var10 = 0x1 + var9;
+  unknown var14 = s[var8];
+  s[var8] = 0x1 + var9;
+  if (0 == var14 <= 0x1 + var9) {
+    uint var16 = sha3r(var8) + var14;
+    unknown var17 = sha3r(var8) + var10;
+    while (true) {
+      if (var16 <= var17) {
+        break;
+      }
+
+      s[var17] = 0x0;
+      uint var17 = 0x1 + var17;
+    }
+
+  }
+  s[var9 + sha3r(var8)] = var7 | (0xffffffffffffffffffffffff0000000000000000000000000000000000000000 & s[var9 + sha3r(var8)]);
+  _storage1[var7] = 0x1 | (0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00 & _storage1[var7]);
+  m[0x20 + $m] = 0x0
+  m[$m] = 0xa9059cbb << 0xe0
+  m[0x4 + $m] = msg.sender
+  m[0x20 + (0x4 + $m)] = var2
+  require(0 != extcodesize(var7););
+  require(0 != call((msg.gas - 0x2c6), var7, 0x0, $m, ((0x20 + (0x20 + (0x4 + $m))) - $m), $m, 0x20););
+  unknown var8 = m[$m];
+  return var7;
+
+}
+
+function created(address _args1, uint256 _args2) public {
+// block 0x167
+  require(0 == msg.value);
+  assert(0 != (_args2 < _storage_args1));
+  return s[_args2 + sha3r(sha3r(_args1, 0x0))];
+
+}
+
+function isEIP20(address _args1) public {
+// block 0x1e9
+  require(0 == msg.value);
+  return (0 != (0xff & _storage1[_args1]));
+
+}
+
+function EIP20ByteCode() public {
+// block 0x23a
+  require(0 == msg.value);
+  unknown var4 = $m;
+  uint $m = $m + (0x20 + (0x20 * ((0x1f + ((((0x100 * (0 == (0x1 & var3))) - 0x1) & var3) / 0x2)) / 0x20)));
+  m[var4] = (((0x100 * (0 == (0x1 & var3))) - 0x1) & var3) / 0x2
+  uint var5 = 0x20 + var4;
+  unknown var7 = (((0x100 * (0 == (0x1 & var7))) - 0x1) & var7) / 0x2;
+  if (0 == var7) goto 0x6fc
+
+// block 0x6b6
+  if (0x1f < var7) goto 0x6d1
+
+// block 0x6be
+  m[var5] = 0x100 * (_storage2 / 0x100)
+  goto 0x6fc
+
+// block 0x6d1
+  unknown swap = var5;
+  uint var5 = var5 + var7;
+  unknown var6 = sha3r(0x2);
+  unknown var7 = swap;
+
+// block 0x6df
+  m[var7] = s[var6]
+  unknown swap = var6;
+  unknown var6 = var7;
+  uint var7 = 0x1 + swap;
+  unknown swap = var6;
+  unknown var6 = var7;
+  uint var7 = 0x20 + swap;
+  if (var5 <= 0x20 + swap) {
+    break;
+  }
+
+
+// block 0x6f3
+
+
+// block 0x6fc
+  m[$m] = (0x20 + $m) - $m
+  m[0x20 + $m] = m[var4]
+  uint var5 = 0x20 + (0x20 + $m);
+  unknown swap = m[var4];
+  uint var6 = 0x20 + var4;
+  unknown var11 = 0x0;
+  while (true) {
+    if (var11 >= swap) {
+      break;
+    }
+
+    m[var5 + var11] = m[var6 + var11]
+    uint var11 = 0x20 + var11;
+  }
+  unknown var6 = swap;
+  unknown swap = var5;
+  unknown var5 = var6;
+  uint var6 = var6 + swap;
+  unknown swap = var5;
+  unknown var5 = var6;
+  unknown var6 = 0x1f & swap;
+  if (0x1f & swap) {
+    m[var5 - var6] = (! ((0x100 ** (0x20 - var6)) - 0x1)) & m[var5 - var6]
+    uint var5 = 0x20 + (var5 - var6);
+  }
+  return $m;
+
+}
+
+function verifyEIP20(address _args1) public {
+// block 0x2c8
+  require(0 == msg.value);
+  address var2 = _args1;
+  unknown var3 = 0x0;
+  unknown var5 = $m;
+  uint $m = 0x20 + $m;
+  m[var5] = 0x0
+
+  unknown var9 = $m;
+  uint $m = 0x20 + $m;
+  m[var9] = 0x0
+  unknown var8 = $m;
+  uint $m = $m + (0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0 & (0x1f + (0x20 + extcodesize(var2);)));
+  m[var8] = extcodesize(var2);
+  extcodecopy(var2, 0x20 + var8, 0x0, extcodesize(var2););
+  unknown var4 = var8;
+  if (m[var8] == ((((0x100 * (0 == (0x1 & var7))) - 0x1) & var7) / 0x2) == 0) {
+    unknown var3 = 0x0;
+  } else {
+    if (0x0 < m[var4]) {
+      unknown var6 = 0x2;
+      assert(0 != (0x0 < ((((0x100 * (0 == (0x1 & var8))) - 0x1) & var8) / 0x2)));
+      if (0x1 & _storage2) {
+        unknown var6 = sha3r(0x2);
+      }
+      assert(0 != (0x0 < m[var4]));
+      if ((0xff00000000000000000000000000000000000000000000000000000000000000 & ((m[0x20 + var4] >> 0xf8) << 0xf8)) == (0xff00000000000000000000000000000000000000000000000000000000000000 & ((0x0 BYTE _storage0[s[var6]]) << 0xf8)) == 0) {
+        unknown var3 = 0x0;
+      } else {
+        unknown var3 = 0x1;
+      }
+    } else {
+
+    }
+  }
+  return (0 != var3);
+
+}
+
+function() public {
+// block 0x6d
+  revert(0x0, 0x0);
+
+}

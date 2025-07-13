@@ -1,0 +1,143 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  balance is array of uint256 at storage 0
+  stor1 is mapping of uint8 at storage 1
+  stor2 is mapping of struct at storage 2
+
+def unknown98fd4b41(uint256 _param1, uint256 _param2) payable: 
+  return bool(stor1[address(_param2)][_param1])
+
+def getBalance(uint256 auctionID, address target) payable: 
+  return balance[auctionID][1][address(target)]
+
+def getNumber(uint256 tokenId, uint256 index) payable: 
+  return balance[tokenId][index]
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  revert
+
+def setFlag(uint256 flag) payable: 
+  stor1[caller][flag] = 1
+
+def addNumber(uint256 _param1, uint256 _param2) payable: 
+  balance[_param1]++
+  balance[_param1][balance[_param1]] = _param2
+
+def incrementBalance(uint256 amount) payable: 
+  balance[amount][1][caller]++
+
+def unknowndd7d5edb() payable: 
+  if stor2[caller].field_0:
+      if not ('cd', 4).length:
+          stor2[caller].field_0 = 0
+          idx = 0
+          while stor2[caller].field_1 + 31 / 32 > idx:
+              stor2[caller][idx].field_0 = 0
+              idx = idx + 1
+              continue 
+      else:
+          stor2[caller].field_0 = (2 * ('cd', 4).length) + 1
+          s = 0
+          idx = cd[4] + 36
+          while cd[4] + ('cd', 4).length + 36 > idx:
+              stor2[caller][s].field_0 = cd[idx]
+              s = s + 1
+              idx = idx + 32
+              continue 
+          idx = Mask(251, 0, ('cd', 4).length + 31) >> 5
+          while stor2[caller].field_1 + 31 / 32 > idx:
+              stor2[caller][idx].field_0 = 0
+              idx = idx + 1
+              continue 
+  else:
+      if not ('cd', 4).length:
+          stor2[caller].field_0 = 0
+          idx = 0
+          while stor2[caller].field_1 + 31 / 32 > idx:
+              stor2[caller][idx].field_0 = 0
+              idx = idx + 1
+              continue 
+      else:
+          stor2[caller].field_0 = (2 * ('cd', 4).length) + 1
+          s = 0
+          idx = cd[4] + 36
+          while cd[4] + ('cd', 4).length + 36 > idx:
+              stor2[caller][s].field_0 = cd[idx]
+              s = s + 1
+              idx = idx + 32
+              continue 
+          idx = Mask(251, 0, ('cd', 4).length + 31) >> 5
+          while stor2[caller].field_1 + 31 / 32 > idx:
+              stor2[caller][idx].field_0 = 0
+              idx = idx + 1
+              continue 
+
+def getBlob(address collection) payable: 
+  if stor2[address(collection)].field_0:
+      if stor2[address(collection)].field_0:
+          if stor2[address(collection)].field_1:
+              if 31 < stor2[address(collection)].field_1:
+                  mem[128] = stor2[address(collection)].field_0
+                  idx = 128
+                  s = 0
+                  while stor2[address(collection)].field_1 + 96 > idx:
+                      mem[idx + 32] = stor2[address(collection)][s].field_256
+                      idx = idx + 32
+                      s = s + 1
+                      continue 
+                  return Array(len=2 * Mask(256, -1, stor2[address(collection)].field_1), data=mem[128 len ceil32(stor2[address(collection)].field_1)]), 
+              mem[128] = 256 * stor2[address(collection)].field_8
+      else:
+          if stor2[address(collection)].field_1:
+              if 31 < stor2[address(collection)].field_1:
+                  mem[128] = stor2[address(collection)].field_0
+                  idx = 128
+                  s = 0
+                  while stor2[address(collection)].field_1 + 96 > idx:
+                      mem[idx + 32] = stor2[address(collection)][s].field_256
+                      idx = idx + 32
+                      s = s + 1
+                      continue 
+                  return Array(len=2 * Mask(256, -1, stor2[address(collection)].field_1), data=mem[128 len ceil32(stor2[address(collection)].field_1)]), 
+              mem[128] = 256 * stor2[address(collection)].field_8
+      mem[ceil32(stor2[address(collection)].field_1) + 192 len ceil32(stor2[address(collection)].field_1)] = mem[128 len ceil32(stor2[address(collection)].field_1)]
+      if ceil32(stor2[address(collection)].field_1) > stor2[address(collection)].field_1:
+          mem[ceil32(stor2[address(collection)].field_1) + stor2[address(collection)].field_1 + 192] = 0
+      return Array(len=2 * Mask(256, -1, stor2[address(collection)].field_1), data=mem[128 len ceil32(stor2[address(collection)].field_1)], mem[(2 * ceil32(stor2[address(collection)].field_1)) + 192 len 2 * ceil32(stor2[address(collection)].field_1)]), 
+  if stor2[address(collection)].field_0:
+      if stor2[address(collection)].field_1:
+          if 31 < stor2[address(collection)].field_1:
+              mem[128] = stor2[address(collection)].field_0
+              idx = 128
+              s = 0
+              while stor2[address(collection)].field_1 + 96 > idx:
+                  mem[idx + 32] = stor2[address(collection)][s].field_256
+                  idx = idx + 32
+                  s = s + 1
+                  continue 
+              return Array(len=stor2[address(collection)].field_0, data=mem[128 len ceil32(stor2[address(collection)].field_1)])
+          mem[128] = 256 * stor2[address(collection)].field_8
+  else:
+      if stor2[address(collection)].field_1:
+          if 31 < stor2[address(collection)].field_1:
+              mem[128] = stor2[address(collection)].field_0
+              idx = 128
+              s = 0
+              while stor2[address(collection)].field_1 + 96 > idx:
+                  mem[idx + 32] = stor2[address(collection)][s].field_256
+                  idx = idx + 32
+                  s = s + 1
+                  continue 
+              return Array(len=stor2[address(collection)].field_0, data=mem[128 len ceil32(stor2[address(collection)].field_1)])
+          mem[128] = 256 * stor2[address(collection)].field_8
+  mem[ceil32(stor2[address(collection)].field_1) + 192 len ceil32(stor2[address(collection)].field_1)] = mem[128 len ceil32(stor2[address(collection)].field_1)]
+  if ceil32(stor2[address(collection)].field_1) > stor2[address(collection)].field_1:
+      mem[ceil32(stor2[address(collection)].field_1) + stor2[address(collection)].field_1 + 192] = 0
+  return Array(len=stor2[address(collection)].field_0, data=mem[128 len ceil32(stor2[address(collection)].field_1)], mem[(2 * ceil32(stor2[address(collection)].field_1)) + 192 len 2 * ceil32(stor2[address(collection)].field_1)]), 
+
+

@@ -1,0 +1,132 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.0;
+
+/// @title            Decompiled Contract
+/// @author           Jonathan Becker <jonathan@jbecker.dev>
+/// @custom:version   heimdall-rs v0.8.8
+///
+/// @notice           This contract was decompiled using the heimdall-rs decompiler.
+///                     It was generated directly by tracing the EVM opcodes from this contract.
+///                     As a result, it may not compile or even be valid solidity code.
+///                     Despite this, it should be obvious what each function does. Overall
+///                     logic should have been preserved throughout decompiling.
+///
+/// @custom:github    You can find the open-source decompiler here:
+///                       https://heimdall.rs
+
+contract DecompiledContract {
+    mapping(bytes32 => bytes32) storage_map_a;
+    mapping(bytes32 => bytes32) storage_map_d;
+    mapping(bytes32 => bytes32) storage_map_b;
+    mapping(bytes32 => bytes32) storage_map_c;
+    
+    
+    /// @custom:selector    0xf3490489
+    /// @custom:signature   getNumber(uint256 arg0, uint256 arg1) public view returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    /// @param              arg1 ["uint256", "bytes32", "int256"]
+    function getNumber(uint256 arg0, uint256 arg1) public view returns (uint256) {
+        uint256 var_a = arg0;
+        uint256 var_b = 0;
+        require(arg1 < (storage_map_a[var_a]));
+        var_a = var_b + keccak256(var_a);
+        uint256 var_c = storage_map_b[var_a];
+        return storage_map_b[var_a];
+    }
+    
+    /// @custom:selector    0xb0a79459
+    /// @custom:signature   getBalance(uint256 arg0, address arg1) public view returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    /// @param              arg1 ["address", "uint160", "bytes20", "int160"]
+    function getBalance(uint256 arg0, address arg1) public view returns (uint256) {
+        uint256 var_a = arg0;
+        uint256 var_b = 0;
+        var_a = address(arg1);
+        var_b = 0x01 + keccak256(var_a);
+        uint256 var_c = storage_map_c[var_a];
+        return storage_map_c[var_a];
+    }
+    
+    /// @custom:selector    0x98fd4b41
+    /// @custom:signature   Unresolved_98fd4b41(uint256 arg0, address arg1) public view returns (bool)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    /// @param              arg1 ["address", "uint160", "bytes20", "int160"]
+    function Unresolved_98fd4b41(uint256 arg0, address arg1) public view returns (bool) {
+        address var_a = address(arg1);
+        var_b = 0x01;
+        var_a = arg0;
+        address var_b = keccak256(var_a);
+        address var_c = !(!bytes1(storage_map_c[var_a] / 0x01));
+        return !(!bytes1(storage_map_c[var_a] / 0x01));
+    }
+    
+    /// @custom:selector    0xb32fe94f
+    /// @custom:signature   incrementBalance(uint256 arg0) public
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function incrementBalance(uint256 arg0) public {
+        uint256 var_a = arg0;
+        uint256 var_b = 0;
+        var_a = address(msg.sender);
+        var_b = 0x01 + keccak256(var_a);
+        storage_map_c[var_a] = 0x01 + storage_map_c[var_a];
+    }
+    
+    /// @custom:selector    0xd40c79f0
+    /// @custom:signature   setFlag(uint256 arg0) public
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function setFlag(uint256 arg0) public {
+        address var_a = address(msg.sender);
+        var_b = 0x01;
+        var_a = arg0;
+        address var_b = keccak256(var_a);
+        storage_map_c[var_a] = (0x01 * 0x01) | (uint248(storage_map_c[var_a]));
+    }
+    
+    /// @custom:selector    0xa0439e80
+    /// @custom:signature   getBlob(address arg0) public view returns (bytes memory)
+    /// @param              arg0 ["address", "uint160", "bytes20", "int160"]
+    function getBlob(address arg0) public view returns (bytes memory) {
+        address var_a = address(arg0);
+        var_b = 0x02;
+        address var_c = var_c + (0x20 + (((0x1f + (((0x0100 * (!bytes1(storage_map_c[var_a]))) - 0x01) & (storage_map_c[var_a]) / 0x02)) / 0x20) * 0x20));
+        address var_d = (((0x0100 * (!bytes1(storage_map_c[var_a]))) - 0x01) & (storage_map_c[var_a])) / 0x02;
+        require(!(((0x0100 * (!bytes1(storage_map_c[var_a]))) - 0x01) & (storage_map_c[var_a])) / 0x02);
+        require(0x1f < (((0x0100 * (!bytes1(storage_map_c[var_a]))) - 0x01) & (storage_map_c[var_a]) / 0x02));
+        var_a = keccak256(var_a);
+        address var_e = storage_map_c[var_a];
+        require((0x20 + var_c) + (((0x0100 * (!bytes1(storage_map_c[var_a]))) - 0x01) & (storage_map_c[var_a]) / 0x02) > (0x20 + (0x20 + var_c)));
+        var_e = (0x20 + var_c) - var_c;
+        address var_f = var_c.length;
+        require(!bytes1(var_c.length));
+        address var_g = (~((0x0100 ** (0x20 - (bytes1(var_c.length)))) - 0x01)) & (var_h);
+        return abi.encodePacked((0x20 + var_c) - var_c, var_c.length, (~((0x0100 ** (0x20 - (bytes1(var_c.length)))) - 0x01)) & (var_h));
+        return abi.encodePacked((0x20 + var_c) - var_c, var_c.length);
+    }
+    
+    /// @custom:selector    0x0f3d0204
+    /// @custom:signature   addNumber(uint256 arg0, uint256 arg1) public
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    /// @param              arg1 ["uint256", "bytes32", "int256"]
+    function addNumber(uint256 arg0, uint256 arg1) public {
+        uint256 var_a = arg0;
+        uint256 var_b = 0;
+        storage_map_a[var_a] = (storage_map_a[var_a]) + 0x01;
+        var_a = var_b + keccak256(var_a);
+        storage_map_d[var_a] = arg1;
+    }
+    
+    /// @custom:selector    0xdd7d5edb
+    /// @custom:signature   Unresolved_dd7d5edb(uint256 arg0) public
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_dd7d5edb(uint256 arg0) public {
+        require(!arg0 > 0x0100000000);
+        address var_a = address(msg.sender);
+        var_b = 0x02;
+        var_a = keccak256(var_a);
+        require(0x1f < (arg0));
+        storage_map_c[var_a] = 0x01 + (arg0 + (arg0));
+        require(!arg0);
+        require(!((0x20 + (0x04 + arg0)) + (arg0)) > (0x20 + (0x04 + arg0)));
+        require(!(keccak256(var_a) + ((0x1f + (((0x0100 * (!bytes1(storage_map_c[var_a]))) - 0x01) & (storage_map_c[var_a]) / 0x02)) / 0x20)) > keccak256(var_a));
+    }
+}

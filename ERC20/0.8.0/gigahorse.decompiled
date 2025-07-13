@@ -1,0 +1,200 @@
+// Decompiled by library.dedaub.com
+// 2025.07.01 14:42 UTC
+// Compiled using the solidity compiler version 0.8.0
+
+
+// Data structures and variables inferred from the use of storage instructions
+uint256 _totalSupply; // STORAGE[0x0]
+mapping (address => uint256) _balances; // STORAGE[0x1]
+mapping (address => mapping (address => uint256)) _allowed; // STORAGE[0x2]
+string _name; // STORAGE[0x3]
+string _symbol; // STORAGE[0x5]
+bool _decimals; // STORAGE[0x4] bytes 0 to 0
+
+
+// Events
+Approval(address, address, uint256);
+Transfer(address, address, uint256);
+
+function transferFrom(address sender, address recipient, uint256 amount) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 96);
+    v0 = v1 = _balances[sender] >= amount;
+    if (_balances[sender] >= amount) {
+        v0 = v2 = _allowed[sender][msg.sender] >= amount;
+    }
+    require(v0, Error('Insufficient balance or allowance'));
+    v3 = _SafeAdd(_balances[recipient], amount);
+    _balances[recipient] = v3;
+    v4 = _SafeSub(_balances[sender], amount);
+    _balances[sender] = v4;
+    if (_allowed[sender][msg.sender] < uint256.max) {
+        v5 = _SafeSub(_allowed[sender][msg.sender], amount);
+        _allowed[sender][msg.sender] = v5;
+    }
+    emit Transfer(sender, recipient, amount);
+    return True;
+}
+
+function balances(address varg0) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    return _balances[varg0];
+}
+
+function decimals() public payable { 
+    return _decimals;
+}
+
+function allowed(address varg0, address varg1) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    return _allowed[varg0][varg1];
+}
+
+function balanceOf(address account) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 32);
+    return _balances[account];
+}
+
+function fallback() public payable { 
+    revert();
+}
+
+function symbol() public payable { 
+    v0 = 0xe32(_symbol.length);
+    v1 = new bytes[](v0);
+    v2 = v3 = v1.data;
+    v4 = 0xe32(_symbol.length);
+    if (v4) {
+        if (31 < v4) {
+            v5 = v6 = _symbol.data;
+            do {
+                MEM[v2] = STORAGE[v5];
+                v5 += 1;
+                v2 += 32;
+            } while (v3 + v4 > v2);
+        } else {
+            MEM[v3] = _symbol.length >> 8 << 8;
+        }
+    }
+    v7 = new bytes[](v1.length);
+    v8 = v9 = 0;
+    while (v8 < v1.length) {
+        v7[v8] = v1[v8];
+        v8 = v8 + 32;
+    }
+    if (v8 > v1.length) {
+        v7[v1.length] = 0;
+    }
+    return v7;
+}
+
+function transfer(address recipient, uint256 amount) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    require(_balances[msg.sender] >= amount, Error('Insufficient balance'));
+    v0 = _SafeSub(_balances[msg.sender], amount);
+    _balances[msg.sender] = v0;
+    v1 = _SafeAdd(_balances[recipient], amount);
+    _balances[recipient] = v1;
+    emit Transfer(msg.sender, recipient, amount);
+    return True;
+}
+
+function allowance(address owner, address spender) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    return _allowed[owner][spender];
+}
+
+function name() public payable { 
+    v0 = 0xe32(_name.length);
+    v1 = new bytes[](v0);
+    v2 = v3 = v1.data;
+    v4 = 0xe32(_name.length);
+    if (v4) {
+        if (31 < v4) {
+            v5 = v6 = _name.data;
+            do {
+                MEM[v2] = STORAGE[v5];
+                v5 += 1;
+                v2 += 32;
+            } while (v3 + v4 > v2);
+        } else {
+            MEM[v3] = _name.length >> 8 << 8;
+        }
+    }
+    v7 = new bytes[](v1.length);
+    v8 = v9 = 0;
+    while (v8 < v1.length) {
+        v7[v8] = v1[v8];
+        v8 = v8 + 32;
+    }
+    if (v8 > v1.length) {
+        v7[v1.length] = 0;
+    }
+    return v7;
+}
+
+function approve(address spender, uint256 amount) public payable { 
+    require(4 + (msg.data.length - 4) - 4 >= 64);
+    _allowed[msg.sender][spender] = amount;
+    emit Approval(msg.sender, spender, amount);
+    return True;
+}
+
+function _SafeAdd(uint256 varg0, uint256 varg1) private { 
+    require(varg0 <= uint256.max - varg1, Panic(17)); // arithmetic overflow or underflow
+    return varg0 + varg1;
+}
+
+function _SafeSub(uint256 varg0, uint256 varg1) private { 
+    require(varg0 >= varg1, Panic(17)); // arithmetic overflow or underflow
+    return varg0 - varg1;
+}
+
+function 0xe32(uint256 varg0) private { 
+    v0 = v1 = varg0 >> 1;
+    if (!(varg0 & 0x1)) {
+        v0 = v2 = v1 & 0x7f;
+    }
+    require(varg0 & 0x1 != v0 < 32, Panic(34)); // access to incorrectly encoded storage byte array
+    return v0;
+}
+
+function totalSupply() public payable { 
+    return _totalSupply;
+}
+
+// Note: The function selector is not present in the original solidity code.
+// However, we display it for the sake of completeness.
+
+function __function_selector__( function_selector) public payable { 
+    MEM[64] = 128;
+    require(!msg.value);
+    if (msg.data.length < 4) {
+        fallback();
+    } else if (0x313ce567 > function_selector >> 224) {
+        if (0x6fdde03 == function_selector >> 224) {
+            name();
+        } else if (0x95ea7b3 == function_selector >> 224) {
+            approve(address,uint256);
+        } else if (0x18160ddd == function_selector >> 224) {
+            totalSupply();
+        } else if (0x23b872dd == function_selector >> 224) {
+            transferFrom(address,address,uint256);
+        } else {
+            require(0x27e235e3 == function_selector >> 224);
+            balances(address);
+        }
+    } else if (0x313ce567 == function_selector >> 224) {
+        decimals();
+    } else if (0x5c658165 == function_selector >> 224) {
+        allowed(address,address);
+    } else if (0x70a08231 == function_selector >> 224) {
+        balanceOf(address);
+    } else if (0x95d89b41 == function_selector >> 224) {
+        symbol();
+    } else if (0xa9059cbb == function_selector >> 224) {
+        transfer(address,uint256);
+    } else {
+        require(0xdd62ed3e == function_selector >> 224);
+        allowance(address,address);
+    }
+}

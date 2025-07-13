@@ -1,0 +1,169 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.0;
+
+/// @title            Decompiled Contract
+/// @author           Jonathan Becker <jonathan@jbecker.dev>
+/// @custom:version   heimdall-rs v0.8.8
+///
+/// @notice           This contract was decompiled using the heimdall-rs decompiler.
+///                     It was generated directly by tracing the EVM opcodes from this contract.
+///                     As a result, it may not compile or even be valid solidity code.
+///                     Despite this, it should be obvious what each function does. Overall
+///                     logic should have been preserved throughout decompiling.
+///
+/// @custom:github    You can find the open-source decompiler here:
+///                       https://heimdall.rs
+
+contract DecompiledContract {
+    
+    /// @custom:selector    0x456901e4
+    /// @custom:signature   Unresolved_456901e4(uint256 arg0) public pure returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_456901e4(uint256 arg0) public pure returns (uint256) {
+        require(!0 < arg0);
+        uint256 var_a = 0;
+        return 0;
+    }
+    
+    /// @custom:selector    0x50d1f082
+    /// @custom:signature   Unresolved_50d1f082(uint256 arg0, uint256 arg1) public pure returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    /// @param              arg1 ["uint256", "bytes32", "int256"]
+    function Unresolved_50d1f082(uint256 arg0, uint256 arg1) public pure returns (uint256) {
+        require(!arg0 > 0);
+        require(!arg1 > 0);
+        uint256 var_a = arg0 + arg1;
+        return arg0 + arg1;
+        var_a = arg0;
+        return arg0;
+        var_a = arg1;
+        return arg1;
+    }
+    
+    /// @custom:selector    0x07b53e4a
+    /// @custom:signature   Unresolved_07b53e4a(uint256 arg0) public pure returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_07b53e4a(uint256 arg0) public pure returns (uint256) {
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        require(arg0 > 0);
+        var_a = 0x0e;
+        return 0x0e;
+        var_a = 0x0d;
+        return 0x0d;
+        var_a = 0x0c;
+        return 0x0c;
+        var_a = 0x0b;
+        return 0x0b;
+        var_a = 0x0a;
+        return 0x0a;
+        var_a = 0x09;
+        return 0x09;
+        var_a = 0x08;
+        return 0x08;
+        var_a = 0x07;
+        return 0x07;
+        var_a = 0x06;
+        return 0x06;
+        var_a = 0x05;
+        return 0x05;
+        var_a = 0x04;
+        return 0x04;
+        var_a = 0x03;
+        return 0x03;
+        var_a = 0x02;
+        return 0x02;
+        var_a = 0x01;
+        return 0x01;
+    }
+    
+    /// @custom:selector    0x5a5e80e7
+    /// @custom:signature   Unresolved_5a5e80e7(uint256 arg0) public pure returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_5a5e80e7(uint256 arg0) public pure returns (uint256) {
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        require(!arg0 > 0);
+        var_a = 0x0e;
+        return 0x0e;
+        var_a = 0x0d;
+        return 0x0d;
+        var_a = 0x0c;
+        return 0x0c;
+        var_a = 0x0b;
+        return 0x0b;
+        var_a = 0x0a;
+        return 0x0a;
+        var_a = 0x09;
+        return 0x09;
+        var_a = 0x08;
+        return 0x08;
+        var_a = 0x07;
+        return 0x07;
+        var_a = 0x06;
+        return 0x06;
+        var_a = 0x05;
+        return 0x05;
+        var_a = 0x04;
+        return 0x04;
+        var_a = 0x03;
+        return 0x03;
+        var_a = 0x02;
+        return 0x02;
+        var_a = 0x01;
+        return 0x01;
+        uint256 var_a = 0;
+        return 0;
+    }
+    
+    /// @custom:selector    0x8719814c
+    /// @custom:signature   Unresolved_8719814c(uint256 arg0) public pure returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_8719814c(uint256 arg0) public pure returns (uint256) {
+        require(!0 < arg0);
+        require(0x02);
+        require(!0 == 0);
+        require(!0 > 0x0a);
+        uint256 var_a = 0;
+        return 0;
+        var_a = 0;
+        return 0;
+    }
+    
+    /// @custom:selector    0x950b9954
+    /// @custom:signature   ifElse(uint256 arg0) public pure returns (uint256)
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function ifElse(uint256 arg0) public pure returns (uint256) {
+        require(!arg0 < 0x0a);
+        require(!arg0 < 0x14);
+        var_a = 0x03;
+        return 0x03;
+        var_a = 0x02;
+        return 0x02;
+        var_a = 0x01;
+        return 0x01;
+    }
+}

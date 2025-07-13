@@ -1,0 +1,125 @@
+function 0x7b53e4a public {
+// block 0x7d
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x20);
+  unknown var2 = _args1;
+  unknown var4 = 0x0;
+  unknown var5 = var2;
+  do {
+      uint var4 = 0x1 + var4;
+      uint var5 = var5 - 0x1;
+    if (0 != (var2 > 0x0)) {
+      break;
+    }
+  } while (true);
+  return var4;
+
+}
+
+function 0x456901e4 public {
+// block 0xcc
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x20);
+  unknown var2 = _args1;
+  unknown var4 = 0x0;
+  unknown var5 = 0x0;
+  while (true) {
+    if (var5 >= var2) {
+      break;
+    }
+
+    uint var4 = var4 + var5;
+    uint var5 = 0x1 + var5;
+  }
+  return var4;
+
+}
+
+function 0x50d1f082 public {
+// block 0x11b
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x40);
+  unknown var2 = _args1;
+  unknown var6 = _args2;
+  if (var2 > 0x0) {
+    if (var6 > 0x0) {
+      uint var4 = var2 + var6;
+    } else {
+      unknown var4 = var2;
+    }
+  } else {
+    unknown var4 = var6;
+  }
+  return var4;
+
+}
+
+function 0x5a5e80e7 public {
+// block 0x174
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x20);
+  unknown var2 = _args1;
+  unknown var4 = 0x0;
+  unknown var5 = var2;
+  while (true) {
+    if (var2 <= 0x0) {
+      break;
+    }
+
+    uint var5 = var5 - 0x1;
+    uint var4 = 0x1 + var4;
+  }
+  return var4;
+
+}
+
+function 0x8719814c public {
+// block 0x1c3
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x20);
+  unknown var2 = _args1;
+  unknown var4 = 0x0;
+  unknown var5 = 0x0;
+  while (true) {
+    if (var5 >= var2) {
+      break;
+    }
+
+    assert(0x1);
+    if (0x0 == var5 % 0x2) {
+
+    } else {
+      if (var5 > 0xa) {
+        break;
+      }
+      uint var4 = var4 + var5;
+    }
+    uint var5 = 0x1 + var5;
+  }
+  return var4;
+
+}
+
+function 0x950b9954 public {
+// block 0x212
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x20);
+  unknown var2 = _args1;
+  if (var2 < 0xa) {
+    unknown var3 = 0x1;
+  } else {
+    if (var2 < 0x14) {
+      unknown var3 = 0x2;
+    } else {
+      unknown var3 = 0x3;
+    }
+  }
+  return var3;
+
+}
+
+function() public {
+// block 0x78
+  revert(0x0, 0x0);
+
+}

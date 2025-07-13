@@ -1,0 +1,55 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.0;
+
+/// @title            Decompiled Contract
+/// @author           Jonathan Becker <jonathan@jbecker.dev>
+/// @custom:version   heimdall-rs v0.8.8
+///
+/// @notice           This contract was decompiled using the heimdall-rs decompiler.
+///                     It was generated directly by tracing the EVM opcodes from this contract.
+///                     As a result, it may not compile or even be valid solidity code.
+///                     Despite this, it should be obvious what each function does. Overall
+///                     logic should have been preserved throughout decompiling.
+///
+/// @custom:github    You can find the open-source decompiler here:
+///                       https://heimdall.rs
+
+contract DecompiledContract {
+    uint256 public getState;
+    
+    
+    /// @custom:selector    0x771602f7
+    /// @custom:signature   Unresolved_771602f7(uint256 arg0) public pure
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_771602f7(uint256 arg0) public pure {
+        require(arg0 == arg0);
+    }
+    
+    /// @custom:selector    0x3ce8848c
+    /// @custom:signature   Unresolved_3ce8848c(uint256 arg0) public pure
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_3ce8848c(uint256 arg0) public pure {
+        require(arg0 == arg0);
+    }
+    
+    /// @custom:selector    0x30cd79b9
+    /// @custom:signature   Unresolved_30cd79b9(uint256 arg0) public payable
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    function Unresolved_30cd79b9(uint256 arg0) public payable {
+        require(arg0 == arg0);
+        require(!getState > (0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff - arg0));
+        var_a = 0x4e487b7100000000000000000000000000000000000000000000000000000000;
+        var_b = 0x11;
+        getState = getState + arg0;
+    }
+    
+    /// @custom:selector    0xa6b884da
+    /// @custom:signature   Unresolved_a6b884da(uint256 arg0, uint256 arg1) public pure
+    /// @param              arg0 ["uint256", "bytes32", "int256"]
+    /// @param              arg1 ["uint256", "bytes32", "int256"]
+    function Unresolved_a6b884da(uint256 arg0, uint256 arg1) public pure {
+        require(!arg0 > 0xffffffffffffffff);
+        require(!(arg0) > 0xffffffffffffffff);
+        require(!arg1 > 0xffffffffffffffff);
+    }
+}

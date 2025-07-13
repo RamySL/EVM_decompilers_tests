@@ -1,0 +1,104 @@
+function getState() public {
+// block 0x72
+  require(0 == msg.value);
+  return _storage0;
+
+}
+
+function incrementState(uint256 _args1) public {
+// block 0x9d
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x20);
+  unknown var2 = _args1;
+  unknown var5 = _storage0;
+  uint var4 = var5 + var2;
+  _storage0 = var4;
+  return;
+
+}
+
+function 0x3ce8848c public {
+// block 0xd8
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x40);
+  uint var5 = _args1 * _args2;
+  unknown var9 = _storage0;
+  uint var7 = var5 + var9;
+  return var7;
+
+}
+
+function add(uint256 _args1, uint256 _args2) public {
+// block 0x131
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x40);
+  unknown var2 = _args1;
+  unknown var6 = _args2;
+  uint var6 = var2 + var6;
+  return var6;
+
+}
+
+function 0xa6b884da public {
+// block 0x18a
+  require(0 == msg.value);
+  require((calldatasize - 0x4) >= 0x40);
+  require(_args1 <= 0x100000000);
+  require((0x20 + (0x4 + _args1)) <= (0x4 + (calldatasize - 0x4)));
+  require(0 == ((var5 > 0x100000000) | (((0x20 + (0x4 + _args1)) + var5) > (0x4 + (calldatasize - 0x4)))));
+  require(_args2 <= 0x100000000);
+  require((0x20 + (0x4 + _args2)) <= (0x4 + (calldatasize - 0x4)));
+  require(0 == (((0 == ((var5 > 0x100000000) | (((0x20 + (0x4 + _args1)) + var5) > (0x4 + (calldatasize - 0x4))))) > 0x100000000) | (((0x20 + (0x4 + _args2)) + (0 == ((var5 > 0x100000000) | (((0x20 + (0x4 + _args1)) + var5) > (0x4 + (calldatasize - 0x4)))))) > (0x4 + (calldatasize - 0x4)))));
+  calldatacopy(0x20 + $m, 0x20 + (0x4 + _args1), _argsvar5);
+  calldatacopy((0x20 + $m) + _argsvar5, 0x20 + (0x4 + _args2), _argsvar7);
+  m[$m] = ((((0x20 + $m) + _argsvar5) + _argsvar7) - $m) - 0x20
+  unknown var8 = $m;
+  unknown $m = ((0x20 + $m) + _argsvar5) + _argsvar7;
+  unknown var13 = 0x0;
+  while (true) {
+    if (var13 >= m[var8]) {
+      break;
+    }
+
+    assert(0 != (var13 < m[var8]));
+    if ((0xff00000000000000000000000000000000000000000000000000000000000000 & ((m[(0x20 + var8) + var13] >> 0xf8) << 0xf8)) >= (0x61 << 0xf8) && (0xff00000000000000000000000000000000000000000000000000000000000000 & ((m[(0x20 + var8) + var13] >> 0xf8) << 0xf8)) <= (0x7a << 0xf8)) {
+      assert(0 != (var13 < m[var8]));
+      assert(0 != (var13 < m[var8]));
+      mstore8((0x20 + var8) + var13, 0x0 BYTE (0xff00000000000000000000000000000000000000000000000000000000000000 & (((((m[(0x20 + var8) + var13] >> 0xf8) << 0xf8) >> 0xf8) - 0x20) << 0xf8)));
+    }
+    uint var13 = 0x1 + var13;
+  }
+  m[$m] = (0x20 + $m) - $m
+  m[0x20 + $m] = m[var8]
+  uint var4 = 0x20 + (0x20 + $m);
+  unknown swap = m[var8];
+  uint var5 = 0x20 + var8;
+  unknown var10 = 0x0;
+  while (true) {
+    if (var10 >= swap) {
+      break;
+    }
+
+    m[var4 + var10] = m[var5 + var10]
+    uint var10 = 0x20 + var10;
+  }
+  unknown var5 = swap;
+  unknown swap = var4;
+  unknown var4 = var5;
+  uint var5 = var5 + swap;
+  unknown swap = var4;
+  unknown var4 = var5;
+  unknown var5 = 0x1f & swap;
+  if (0x1f & swap) {
+    m[var4 - var5] = (! ((0x100 ** (0x20 - var5)) - 0x1)) & m[var4 - var5]
+    uint var4 = 0x20 + (var4 - var5);
+  }
+  return $m;
+
+}
+
+function() public {
+// block 0x6d
+  revert(0x0, 0x0);
+
+}

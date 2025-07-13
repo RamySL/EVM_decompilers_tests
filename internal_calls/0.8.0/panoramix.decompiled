@@ -1,0 +1,37 @@
+# Palkeoramix decompiler. 
+
+def storage:
+  state is uint256 at storage 0
+
+def getState() payable: 
+  return state
+
+#
+#  Regular functions
+#
+
+def _fallback(?) payable: # default function
+  revert
+
+def unknown30cd79b9(uint256 _param1) payable: 
+  state += _param1
+
+def add(uint256 x, uint256 y) payable: 
+  return (x + y)
+
+def unknown3ce8848c(uint256 _param1, uint256 _param2) payable: 
+  return ((_param1 * _param2) + state)
+
+def unknowna6b884da(array _param1, array _param2) payable: 
+  mem[128 len _param1.length] = _param1[all]
+  mem[_param1.length + 128] = 0
+  mem[_param1.length + 128 len _param2.length] = _param2[all]
+  idx = 0
+  while idx < _param1.length + _param2.length:
+      idx = idx + 1
+      continue 
+  mem[_param1.length + _param2.length + 128] = 32
+  return Array(len=_param1.length + _param2.length, data=_param1[all], mem[_param1.length + 128 len floor32(_param1.length + _param2.length + 31) - _param1.length]), 
+
+
+

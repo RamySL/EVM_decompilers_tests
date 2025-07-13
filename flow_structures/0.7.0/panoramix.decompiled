@@ -1,0 +1,58 @@
+# Palkeoramix decompiler. 
+
+def _fallback(?) payable: # default function
+  revert
+
+def ifElse(uint256 _param1) payable: 
+  if _param1 < 10:
+      return 1
+  if _param1 >= 20:
+      return 3
+  return 2
+
+def unknown456901e4(uint256 _param1) payable: 
+  idx = 0
+  while idx < _param1:
+      idx = idx + 1
+      continue 
+  return 0
+
+def unknown50d1f082(uint256 _param1, uint256 _param2) payable: 
+  if _param1 <= 0:
+      return _param2
+  if _param2 <= 0:
+      return _param1
+  return (_param1 + _param2)
+
+def unknown5a5e80e7(uint256 _param1) payable: 
+  s = 0
+  idx = _param1
+  while idx > 0:
+      s = s + 1
+      idx = idx - 1
+      continue 
+  return s
+
+def unknown07b53e4a(uint256 _param1) payable: 
+  s = 0
+  idx = _param1
+  while idx - 1 > 0:
+      s = s + 1
+      idx = idx - 1
+      continue 
+  return (s + 1)
+
+def unknown8719814c(uint256 _param1) payable: 
+  idx = 0
+  while idx < _param1:
+      if not idx % 2:
+          idx = idx + 1
+          continue 
+      if idx <= 10:
+          idx = idx + 1
+          continue 
+      else:
+          return 0
+  return 0
+
+
