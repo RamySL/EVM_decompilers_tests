@@ -149,20 +149,3 @@ Le dépôt contient actuellement des tests compilés avec plusieurs versions de 
 - `0.8.0`
 
 Le choix de plusieurs versions permet de mesurer l’impact des changements de compilation sur la forme du bytecode et, par conséquent, sur la qualité de la décompilation.
-
----
-
-## Comment lire les résultats
-
-Pour un thème donné, l’analyse peut se faire de la manière suivante :
-
-1. **Lire `source.sol`** pour comprendre l’intention sémantique du contrat.
-2. **Observer `CFG.svg`** pour visualiser la structure réelle du bytecode EVM.
-3. **Comparer les fichiers `*.decompiled`** pour voir ce que chaque outil reconstruit ou perd.
-4. Évaluer plusieurs aspects :
-   - noms et frontières de fonctions ;
-   - restitution des branches et boucles ;
-   - reconstruction des accès stockage / mémoire ;
-   - qualité des types et des signatures ;
-   - lisibilité globale ;
-   - écarts sémantiques éventuels par rapport au source.
